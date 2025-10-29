@@ -112,34 +112,40 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   itemCount: stories.length,
                   itemBuilder: (context, index) {
                     final story = stories[index];
-                    return Container(
-                      width: 140,
-                      margin: const EdgeInsets.only(right: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              story.imageUrl,
-                              height: 160,
-                              width: 140,
-                              fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () {
+                        context.read<GameProvider>().loadStory(story.storyAssetPath);
+                        Navigator.pushNamed(context, '/game');
+                      },
+                      child: Container(
+                        width: 140,
+                        margin: const EdgeInsets.only(right: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.network(
+                                story.imageUrl,
+                                height: 160,
+                                width: 140,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            story.title,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            story.author,
-                            style: const TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            Text(
+                              story.title,
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              story.author,
+                              style: const TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

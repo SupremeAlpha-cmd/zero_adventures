@@ -4,7 +4,7 @@
   "scenes": {
     "introduction": {
       "title": "The Neon City",
-      "narrative": "You are a cyborg in a city of chrome and neon. You are haunted by dreams of a life you never had. You must discover the truth about your past.",
+      "text": "You are a cyborg in a city of chrome and neon. You are haunted by dreams of a life you never had. You must discover the truth about your past.",
       "choices": [
         {
           "text": "Search for your origins.",
@@ -18,7 +18,7 @@
     },
     "search_for_origins": {
       "title": "A Dark Past",
-      "narrative": "You discover that you were once a human who was forced to become a cyborg. The people who did this to you are still out there, and they will stop at nothing to keep their secrets.",
+      "text": "You discover that you were once a human who was forced to become a cyborg. The people who did this to you are still out there, and they will stop at nothing to keep their secrets.",
       "choices": [
         {
           "text": "Confront your creators.",
@@ -28,7 +28,7 @@
     },
     "embrace_new_life": {
       "title": "A New Beginning",
-      "narrative": "You accept your new life as a cyborg. You are no longer haunted by the past, and you are free to forge your own future.",
+      "text": "You accept your new life as a cyborg. You are no longer haunted by the past, and you are free to forge your own future.",
       "choices": [
         {
           "text": "End Game",
@@ -38,7 +38,7 @@
     },
     "confront_creators": {
       "title": "A Final Showdown",
-      "narrative": "You confront your creators, and you learn the truth. You are a weapon, and they are your masters. You have a choice to make: obey them or fight for your freedom.",
+      "text": "You confront your creators, and you learn the truth. You are a weapon, and they are your masters. You have a choice to make: obey them or fight for your freedom.",
       "choices": [
         {
           "text": "End Game",

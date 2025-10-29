@@ -4,7 +4,7 @@
   "scenes": {
     "introduction": {
       "title": "The Time-Torn City",
-      "narrative": "You are a time traveler who has become stranded in a city that is constantly shifting between the past, present, and future. You must find a way to stabilize time and escape the city.",
+      "text": "You are a time traveler who has become stranded in a city that is constantly shifting between the past, present, and future. You must find a way to stabilize time and escape the city.",
       "choices": [
         {
           "text": "Try to fix the timeline.",
@@ -18,7 +18,7 @@
     },
     "fix_the_timeline": {
       "title": "A Futile Effort",
-      "narrative": "You try to mend the fractured timeline, but your efforts are in vain. The city is too far gone, and you are consumed by the temporal chaos.",
+      "text": "You try to mend the fractured timeline, but your efforts are in vain. The city is too far gone, and you are consumed by the temporal chaos.",
       "choices": [
         {
           "text": "End Game",
@@ -28,7 +28,7 @@
     },
     "find_a_way_out": {
       "title": "A Glimmer of Hope",
-      "narrative": "You find a temporal rift that could lead you home. It is a risky jump, but it is your only hope.",
+      "text": "You find a temporal rift that could lead you home. It is a risky jump, but it is your only hope.",
       "choices": [
         {
           "text": "Jump through the rift.",
@@ -38,7 +38,7 @@
     },
     "jump_through_the_rift": {
       "title": "Escape or Oblivion?",
-      "narrative": "You leap into the rift, not knowing what awaits you on the other side. You are either on your way home or to your doom.",
+      "text": "You leap into the rift, not knowing what awaits you on the other side. You are either on your way home or to your doom.",
       "choices": [
         {
           "text": "End Game",

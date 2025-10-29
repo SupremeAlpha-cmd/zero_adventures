@@ -9,12 +9,10 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use context.watch to listen for changes in the GameProvider
     final game = context.watch<GameProvider>();
     final Scene? scene = game.currentScene;
     final storyTitle = game.currentStory?.title ?? 'Loading...';
 
-    // Handle loading state
     if (scene == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
@@ -24,58 +22,70 @@ class GameScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // TODO: Add a confirmation dialog
-            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Exit Game?'),
+                  content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('Exit'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           },
         ),
         title: Text(storyTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.menu),
-            onPressed: () {
-              // TODO: Show hamburger menu
-            },
+            onPressed: () {},
           ),
         ],
       ),
-      // Use a SafeArea to avoid the system UI (like notches)
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // --- Story Text ---
               Expanded(
                 child: SingleChildScrollView(
                   child: Text(
                     scene.text,
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       color: Colors.white.withOpacity(0.9),
-                      height: 1.6, // Line spacing
+                      height: 1.6,
                     ),
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // --- Choices ---
-              // Build a list of buttons from the scene's choices
               Column(
                 children: scene.choices.map((choice) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
                     child: ElevatedButton(
-                      // Use a different style for choices
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00FFFF), // Cyan
-                        foregroundColor: Colors.black, // Black text
+                        backgroundColor: const Color(0xFF00FFFF),
+                        foregroundColor: Colors.black,
                         minimumSize: const Size(double.infinity, 50),
                       ),
                       onPressed: () {
-                        // When pressed, call makeChoice on the provider
                         context.read<GameProvider>().makeChoice(choice);
                       },
                       child: Text(choice.text),
@@ -87,7 +97,6 @@ class GameScreen extends StatelessWidget {
           ),
         ),
       ),
-      // --- Character FAB ---
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(

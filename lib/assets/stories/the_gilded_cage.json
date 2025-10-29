@@ -1,0 +1,50 @@
+{
+  "title": "The Gilded Cage",
+  "startSceneId": "introduction",
+  "scenes": {
+    "introduction": {
+      "title": "The City of the Elite",
+      "text": "You are a member of the elite in a city of unimaginable wealth and power. But you are a prisoner in a gilded cage. You must find a way to escape your life of luxury and find true freedom.",
+      "choices": [
+        {
+          "text": "Seek a way out.",
+          "nextSceneId": "seek_a_way_out"
+        },
+        {
+          "text": "Accept your fate.",
+          "nextSceneId": "accept_your_fate"
+        }
+      ]
+    },
+    "seek_a_way_out": {
+      "title": "The Underground",
+      "text": "You discover a hidden world beneath the city, a world of poverty and rebellion. You have a chance to join the fight for freedom, but it will not be easy.",
+      "choices": [
+        {
+          "text": "Join the rebellion.",
+          "nextSceneId": "join_the_rebellion"
+        }
+      ]
+    },
+    "accept_your_fate": {
+      "title": "A Life of Empty Luxury",
+      "text": "You resign yourself to a life of comfort and ease. You have everything you could ever want, but you are not happy.",
+      "choices": [
+        {
+          "text": "End Game",
+          "nextSceneId": "end_game"
+        }
+      ]
+    },
+    "join_the_rebellion": {
+      "title": "A Dangerous New Life",
+      "text": "You join the rebellion and fight for a better world. You have found your purpose, but you have also made powerful enemies.",
+      "choices": [
+        {
+          "text": "End Game",
+          "nextSceneId": "end_game"
+        }
+      ]
+    }
+  }
+}

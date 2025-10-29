@@ -1,85 +1,102 @@
 {
-  "title": "Interstellar Odyssey",
-  "startSceneId": "bridge_alert",
-  "scenes": {
-    "bridge_alert": {
-      "text": "The bridge of the 'Odyssey' is bathed in the crimson glow of a red alert. A distress signal, faint and distorted, echoes from a nearby asteroid field—a region notorious for pirate activity and gravitational anomalies. The source is unknown, but the message is clear: a vessel is in peril.\n\nYour first officer turns to you, her expression a mix of caution and concern. The fate of the distressed ship, and potentially your own, rests on your next decision.\n\nWhat is your command, Captain?",
-      "choices": [
-        {
-          "text": "Engage the distress signal",
-          "nextSceneId": "engage_signal"
-        },
-        {
-          "text": "Run a diagnostic scan",
-          "nextSceneId": "run_scan"
-        },
-        {
-          "text": "Maintain course and ignore",
-          "nextSceneId": "ignore_signal"
-        }
-      ]
-    },
-    "engage_signal": {
-      "text": "You order the helm to plot a course into the asteroid field. The crew's tension is palpable. As you approach the coordinates, you find a freighter, engines dead, with pirate markings... It's an ambush!\n\nWhat do you do?",
-      "choices": [
-        {
-          "text": "Raise shields and return fire!",
-          "nextSceneId": "fight_pirates"
-        },
-        {
-          "text": "Attempt to flee",
-          "nextSceneId": "flee_pirates"
-        }
-      ]
-    },
-    "run_scan": {
-      "text": "You order a deep sensor scan of the signal's origin. The tactical officer reports, 'Captain, the signal's energy signature is looping. It's a decoy. And... I'm detecting multiple ships hiding in the gravitational shadows!'\n\nIt's an ambush!",
-      "choices": [
-        {
-          "text": "Raise shields and prepare for battle.",
-          "nextSceneId": "fight_pirates"
-        },
-        {
-          "text": "Charge the FTL drive. Get us out of here!",
-          "nextSceneId": "flee_pirates"
-        }
-      ]
-    },
-    "ignore_signal": {
-      "text": "You command the 'Odyssey' to maintain its course. A few crew members exchange uneasy glances, but orders are orders. The signal fades behind you. You'll never know if it was a trap or a ship full of souls you condemned.\n\nYour journey continues, but with a new weight on your conscience.",
-      "choices": [
-        {
-          "text": "End Adventure",
-          "nextSceneId": "end_game"
-        }
-      ]
-    },
-    "fight_pirates": {
-      "text": "You fight bravely, but the pirates are too strong...",
-      "choices": [
-         {
-          "text": "Try Again",
-          "nextSceneId": "bridge_alert"
-        }
-      ]
-    },
-     "flee_pirates": {
-      "text": "You managed to escape, but the ship took heavy damage.",
-      "choices": [
-         {
-          "text": "Try Again",
-          "nextSceneId": "bridge_alert"
-        }
-      ]
-    },
-    "end_game": {
-        "text": "The adventure is over.",
+    "title": "Interstellar Odyssey",
+    "startSceneId": "introduction",
+    "scenes": {
+      "introduction": {
+        "title": "The Cryo-sleep Chamber",
+        "text": "You awaken from cryo-sleep to the blaring of alarms. Your ship, the Odyssey, is adrift in uncharted space. The main computer is offline, and you are the only one awake.",
         "choices": [
-        {
-            "text": "Play Again",
-            "nextSceneId": "bridge_alert"
-        }
+          {
+            "text": "Go to the bridge.",
+            "nextSceneId": "bridge"
+          },
+          {
+            "text": "Go to the engine room.",
+            "nextSceneId": "engine_room"
+          }
         ]
+      },
+      "bridge": {
+        "title": "The Silent Bridge",
+        "text": "The bridge is dark and silent. The viewscreen shows a field of asteroids. You are on a collision course.",
+        "choices": [
+          {
+            "text": "Try to restore power.",
+            "nextSceneId": "restore_power"
+          },
+          {
+            "text": "Try to manually pilot the ship.",
+            "nextSceneId": "manual_pilot"
+          }
+        ]
+      },
+      "engine_room": {
+        "title": "The Humming Core",
+        "text": "The engine room is filled with the hum of the ship's core. The power is fluctuating, and you can see sparks flying from a nearby console.",
+        "choices": [
+          {
+            "text": "Try to stabilize the core.",
+            "nextSceneId": "stabilize_core"
+          },
+          {
+            "text": "Try to reroute power.",
+            "nextSceneId": "reroute_power"
+          }
+        ]
+      },
+      "restore_power": {
+        "title": "A Glimmer of Hope",
+        "text": "You manage to restore power to the bridge. The main computer comes online, and you are able to divert the ship from its collision course.",
+        "choices": [
+          {
+            "text": "Continue your journey.",
+            "nextSceneId": "continue_journey"
+          }
+        ]
+      },
+      "manual_pilot": {
+        "title": "A Risky Maneuver",
+        "text": "You take the controls and try to pilot the ship through the asteroid field. It is a risky maneuver, but you are a skilled pilot.",
+        "choices": [
+          {
+            "text": "You succeed.",
+            "nextSceneId": "continue_journey"
+          },
+          {
+            "text": "You fail.",
+            "nextSceneId": "end_game"
+          }
+        ]
+      },
+      "stabilize_core": {
+        "title": "A Dangerous Task",
+        "text": "You manage to stabilize the core, but not before a power surge overloads the system. The ship is safe, but you are knocked unconscious.",
+        "choices": [
+          {
+            "text": "You awaken later.",
+            "nextSceneId": "continue_journey"
+          }
+        ]
+      },
+      "reroute_power": {
+        "title": "A Spark of Genius",
+        "text": "You reroute power to the bridge, and the main computer comes online. You are able to divert the ship from its collision course.",
+        "choices": [
+          {
+            "text": "Continue your journey.",
+            "nextSceneId": "continue_journey"
+          }
+        ]
+      },
+      "continue_journey": {
+        "title": "A New Beginning",
+        "text": "You have saved the ship and its crew. You are a hero. You continue your journey, ready for whatever adventures await you.",
+        "choices": [
+          {
+            "text": "End Game",
+            "nextSceneId": "end_game"
+          }
+        ]
+      }
     }
   }
-}
