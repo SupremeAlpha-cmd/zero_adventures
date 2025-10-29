@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:zero_adventures/screens/explore_screen.dart';
 import 'package:zero_adventures/screens/library_screen.dart';
 import 'package:zero_adventures/screens/profile_screen.dart';
-import 'package:zero_adventures/screens/settings_screen.dart';
 import 'package:zero_adventures/screens/store_screen.dart';
 
 class MainShell extends StatefulWidget {
@@ -20,7 +19,6 @@ class _MainShellState extends State<MainShell> {
     StoreScreen(),
     LibraryScreen(),
     ProfileScreen(),
-    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -54,11 +52,6 @@ class _MainShellState extends State<MainShell> {
             icon: Icon(Icons.person_outline),
             activeIcon: Icon(Icons.person),
             label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-            label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,
