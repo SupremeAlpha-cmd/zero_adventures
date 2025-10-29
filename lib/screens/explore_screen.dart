@@ -14,7 +14,7 @@ class ExploreScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             onPressed: () {
-              // TODO: Navigate to SettingsScreen (screen (7).png)
+              Navigator.pushNamed(context, '/settings');
             },
           ),
         ],
