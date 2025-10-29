@@ -1,0 +1,85 @@
+{
+  "title": "Interstellar Odyssey",
+  "startSceneId": "bridge_alert",
+  "scenes": {
+    "bridge_alert": {
+      "text": "The bridge of the 'Odyssey' is bathed in the crimson glow of a red alert. A distress signal, faint and distorted, echoes from a nearby asteroid field—a region notorious for pirate activity and gravitational anomalies. The source is unknown, but the message is clear: a vessel is in peril.\n\nYour first officer turns to you, her expression a mix of caution and concern. The fate of the distressed ship, and potentially your own, rests on your next decision.\n\nWhat is your command, Captain?",
+      "choices": [
+        {
+          "text": "Engage the distress signal",
+          "nextSceneId": "engage_signal"
+        },
+        {
+          "text": "Run a diagnostic scan",
+          "nextSceneId": "run_scan"
+        },
+        {
+          "text": "Maintain course and ignore",
+          "nextSceneId": "ignore_signal"
+        }
+      ]
+    },
+    "engage_signal": {
+      "text": "You order the helm to plot a course into the asteroid field. The crew's tension is palpable. As you approach the coordinates, you find a freighter, engines dead, with pirate markings... It's an ambush!\n\nWhat do you do?",
+      "choices": [
+        {
+          "text": "Raise shields and return fire!",
+          "nextSceneId": "fight_pirates"
+        },
+        {
+          "text": "Attempt to flee",
+          "nextSceneId": "flee_pirates"
+        }
+      ]
+    },
+    "run_scan": {
+      "text": "You order a deep sensor scan of the signal's origin. The tactical officer reports, 'Captain, the signal's energy signature is looping. It's a decoy. And... I'm detecting multiple ships hiding in the gravitational shadows!'\n\nIt's an ambush!",
+      "choices": [
+        {
+          "text": "Raise shields and prepare for battle.",
+          "nextSceneId": "fight_pirates"
+        },
+        {
+          "text": "Charge the FTL drive. Get us out of here!",
+          "nextSceneId": "flee_pirates"
+        }
+      ]
+    },
+    "ignore_signal": {
+      "text": "You command the 'Odyssey' to maintain its course. A few crew members exchange uneasy glances, but orders are orders. The signal fades behind you. You'll never know if it was a trap or a ship full of souls you condemned.\n\nYour journey continues, but with a new weight on your conscience.",
+      "choices": [
+        {
+          "text": "End Adventure",
+          "nextSceneId": "end_game"
+        }
+      ]
+    },
+    "fight_pirates": {
+      "text": "You fight bravely, but the pirates are too strong...",
+      "choices": [
+         {
+          "text": "Try Again",
+          "nextSceneId": "bridge_alert"
+        }
+      ]
+    },
+     "flee_pirates": {
+      "text": "You managed to escape, but the ship took heavy damage.",
+      "choices": [
+         {
+          "text": "Try Again",
+          "nextSceneId": "bridge_alert"
+        }
+      ]
+    },
+    "end_game": {
+        "text": "The adventure is over.",
+        "choices": [
+        {
+            "text": "Play Again",
+            "nextSceneId": "bridge_alert"
+        }
+        ]
+    }
+  }
+}
