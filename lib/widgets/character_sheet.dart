@@ -8,16 +8,12 @@ class CharacterSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get the provider, but don't listen for changes
-    // (assuming stats don't change while the sheet is open)
-    final provider = context.read<GameProvider>();
-    final stats = provider.playerStats;
+    final player = context.watch<GameProvider>().player;
 
     return Container(
-      // Let it take up 90% of the screen height
       height: MediaQuery.of(context).size.height * 0.9,
       decoration: const BoxDecoration(
-        color: Color(0xFF1A1726), // Dark background from your UI
+        color: Color(0xFF1A1726),
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SingleChildScrollView(
@@ -26,11 +22,8 @@ class CharacterSheet extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // --- Header ---
-              _buildHeader(context, stats),
+              _buildHeader(context, player),
               const SizedBox(height: 24),
-
-              // --- Character Stats ---
               Text(
                 'Character Stats',
                 style: TextStyle(
@@ -43,23 +36,21 @@ class CharacterSheet extends StatelessWidget {
               _buildStatBar(
                 'Health (HP)',
                 Icons.favorite,
-                stats.currentHp / stats.maxHp,
-                '${stats.currentHp}/${stats.maxHp}',
+                player.health / player.maxHealth,
+                '${player.health}/${player.maxHealth}',
                 Colors.green.shade400,
               ),
               const SizedBox(height: 16),
               _buildStatBar(
                 'Mana (MP)',
-                Icons.auto_awesome, // Using a different icon
-                stats.currentMp / stats.maxMp,
-                '${stats.currentMp}/${stats.maxMp}',
-                Colors.blue.shade400,
+                Icons.auto_awesome,
+                player.mana / player.maxMana,
+                '${player.mana}/${player.maxMana}',
+                Colors.cyan.shade400,
               ),
               const SizedBox(height: 24),
-              _buildAttributeGrid(stats),
+              _buildAttributeGrid(player),
               const SizedBox(height: 24),
-
-              // --- Inventory ---
               Text(
                 'Inventory',
                 style: TextStyle(
@@ -69,10 +60,8 @@ class CharacterSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              _buildInventoryGrid(provider.inventory),
+              _buildInventoryGrid(player.inventory),
               const SizedBox(height: 24),
-
-              // --- Relationships ---
               Text(
                 'Relationships',
                 style: TextStyle(
@@ -82,7 +71,7 @@ class CharacterSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              _buildRelationshipsList(provider.relationships),
+              _buildRelationshipsList(player.relationships),
             ],
           ),
         ),
@@ -90,12 +79,10 @@ class CharacterSheet extends StatelessWidget {
     );
   }
 
-  // --- Header ---
-  Widget _buildHeader(BuildContext context, PlayerStats stats) {
+  Widget _buildHeader(BuildContext context, Player player) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
-        // Close Button
         Align(
           alignment: Alignment.topRight,
           child: IconButton(
@@ -103,20 +90,16 @@ class CharacterSheet extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        // Avatar and Name
         Column(
           children: [
             CircleAvatar(
               radius: 40,
               backgroundColor: Colors.grey.shade800,
-              // Use AssetImage for local assets
-              // backgroundImage: AssetImage(stats.avatarAsset),
-              // Using a placeholder icon for simplicity
-              child: const Icon(Icons.person, size: 40, color: Colors.white70),
+              backgroundImage: NetworkImage(player.avatarUrl),
             ),
             const SizedBox(height: 12),
             Text(
-              stats.name,
+              player.name,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -125,7 +108,7 @@ class CharacterSheet extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              stats.location,
+              player.location,
               style: const TextStyle(fontSize: 16, color: Colors.white70),
             ),
           ],
@@ -134,7 +117,6 @@ class CharacterSheet extends StatelessWidget {
     );
   }
 
-  // --- Stat Bar Helper ---
   Widget _buildStatBar(
     String label,
     IconData icon,
@@ -172,15 +154,21 @@ class CharacterSheet extends StatelessWidget {
     );
   }
 
-  // --- Attribute Grid ---
-  Widget _buildAttributeGrid(PlayerStats stats) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildAttributeGrid(Player player) {
+    return GridView(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+      ),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       children: [
-        _buildAttributeItem('Strength', stats.strength),
-        _buildAttributeItem('Dexterity', stats.dexterity),
-        _buildAttributeItem('Intelligence', stats.intelligence),
-        _buildAttributeItem('Charisma', stats.charisma),
+        _buildAttributeItem('Strength', player.strength),
+        _buildAttributeItem('Dexterity', player.dexterity),
+        _buildAttributeItem('Intelligence', player.intelligence),
+        _buildAttributeItem('Charisma', player.charisma),
       ],
     );
   }
@@ -210,61 +198,69 @@ class CharacterSheet extends StatelessWidget {
     );
   }
 
-  // --- Inventory Grid ---
-  Widget _buildInventoryGrid(List<Item?> inventory) {
+  Widget _buildInventoryGrid(List<Item> inventory) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
-      itemCount: 8, // 2 rows of 4
+      itemCount: 8,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final item = inventory[index];
+        final item = index < inventory.length ? inventory[index] : null;
+        final isSelected = index == 0;
         return Container(
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.3),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.white24, width: 1),
+            border: Border.all(
+              color: isSelected ? Colors.cyan.shade400 : Colors.white24,
+              width: isSelected ? 2 : 1,
+            ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.cyan.shade400.withOpacity(0.5),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                    )
+                  ]
+                : [],
           ),
           child: item != null
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
-                  // Placeholder for item image
-                  child: Icon(Icons.shield, color: Colors.amber),
-                  // You would use: Image.asset(item.imageAsset)
+                  child: Image.network(item.imageUrl),
                 )
-              : null, // Empty slot
+              : null,
         );
       },
     );
   }
 
-  // --- Relationships List ---
-  Widget _buildRelationshipsList(List<NPC> relationships) {
+  Widget _buildRelationshipsList(List<Relationship> relationships) {
     return Column(
       children: relationships
-          .map((npc) => _buildRelationshipTile(npc))
+          .map((relationship) => _buildRelationshipTile(relationship))
           .toList(),
     );
   }
 
-  Widget _buildRelationshipTile(NPC npc) {
-    // Determine status color
+  Widget _buildRelationshipTile(Relationship relationship) {
     Color statusColor;
     String statusText;
-    switch (npc.status) {
-      case RelationshipStatus.Ally:
+    switch (relationship.status) {
+      case RelationshipStatus.ally:
         statusColor = Colors.green;
         statusText = 'Ally';
         break;
-      case RelationshipStatus.Neutral:
+      case RelationshipStatus.neutral:
         statusColor = Colors.grey;
         statusText = 'Neutral';
         break;
-      case RelationshipStatus.Enemy:
+      case RelationshipStatus.enemy:
         statusColor = Colors.red;
         statusText = 'Enemy';
         break;
@@ -277,22 +273,16 @@ class CharacterSheet extends StatelessWidget {
           CircleAvatar(
             radius: 20,
             backgroundColor: Colors.grey.shade800,
-            // backgroundImage: AssetImage(npc.imageAsset),
-            child: const Icon(Icons.person, color: Colors.white70),
+            backgroundImage: NetworkImage(relationship.imageUrl),
           ),
           const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '${npc.name}, ${npc.title}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+          Text(
+            relationship.name,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const Spacer(),
           Container(

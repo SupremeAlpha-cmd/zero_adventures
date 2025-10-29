@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zero_adventures/screens/explore_screen.dart';
+import 'package:zero_adventures/screens/library_screen.dart';
 import 'package:zero_adventures/screens/profile_screen.dart';
+import 'package:zero_adventures/screens/settings_screen.dart';
 import 'package:zero_adventures/screens/store_screen.dart';
 
 class MainShell extends StatefulWidget {
@@ -13,11 +15,12 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _selectedIndex = 0;
 
-  // The pages corresponding to the bottom nav bar items
   static const List<Widget> _pages = <Widget>[
-    ExploreScreen(), // Your screen (5)
-    StoreScreen(), // Your screen (9)
-    ProfileScreen(), // Your screen (11)
+    ExploreScreen(),
+    StoreScreen(),
+    LibraryScreen(),
+    ProfileScreen(),
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -43,14 +46,24 @@ class _MainShellState extends State<MainShell> {
             label: 'Store',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.library_books_outlined),
+            activeIcon: Icon(Icons.library_books),
+            label: 'Library',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             activeIcon: Icon(Icons.person),
             label: 'Profile',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_outlined),
+            activeIcon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed, // Good for 3-5 items
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }

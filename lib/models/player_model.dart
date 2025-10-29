@@ -1,51 +1,63 @@
-// Enum to define relationship status
-enum RelationshipStatus { Ally, Neutral, Enemy }
+import 'package:flutter/material.dart';
 
-class PlayerStats {
-  final String name;
-  final String location;
-  final String avatarAsset; // Path to avatar image
-  final int currentHp;
-  final int maxHp;
-  final int currentMp;
-  final int maxMp;
-  final int strength;
-  final int dexterity;
-  final int intelligence;
-  final int charisma;
+class Player {
+  String name;
+  String location;
+  int health;
+  int maxHealth;
+  int mana;
+  int maxMana;
+  int strength;
+  int dexterity;
+  int intelligence;
+  int charisma;
+  int chronoshards;
+  List<Item> inventory;
+  List<Relationship> relationships;
+  String avatarUrl;
 
-  PlayerStats({
+  Player({
     required this.name,
     required this.location,
-    required this.avatarAsset,
-    required this.currentHp,
-    required this.maxHp,
-    required this.currentMp,
-    required this.maxMp,
+    required this.health,
+    required this.maxHealth,
+    required this.mana,
+    required this.maxMana,
     required this.strength,
     required this.dexterity,
     required this.intelligence,
     required this.charisma,
+    this.chronoshards = 500, // Default value
+    required this.inventory,
+    required this.relationships,
+    required this.avatarUrl,
   });
 }
 
 class Item {
-  final String name;
-  final String imageAsset; // Path to item image
+  String name;
+  String imageUrl;
 
-  Item({required this.name, required this.imageAsset});
+  Item({
+    required this.name,
+    required this.imageUrl,
+  });
 }
 
-class NPC {
-  final String name;
-  final String title;
-  final String imageAsset; // Path to NPC avatar
-  final RelationshipStatus status;
+class Relationship {
+  String name;
+  RelationshipStatus status;
+  String imageUrl;
 
-  NPC({
+  Relationship({
     required this.name,
-    required this.title,
-    required this.imageAsset,
     required this.status,
+    required this.imageUrl,
   });
+}
+
+enum RelationshipStatus {
+  ally,
+  neutral,
+  enemy,
 }

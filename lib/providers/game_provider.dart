@@ -8,57 +8,36 @@ class GameProvider with ChangeNotifier {
   Story? _currentStory;
   String? _currentSceneId;
 
-  // Player Stats (matching screen (3).png)
-  final PlayerStats _playerStats = PlayerStats(
+  final Player _player = Player(
     name: 'Elara the Sorceress',
     location: 'The Whispering Woods',
-    avatarAsset: 'assets/images/elara_avatar.png', // Placeholder path
-    currentHp: 85,
-    maxHp: 100,
-    currentMp: 60,
-    maxMp: 100,
+    avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/elara_avatar.png?alt=media&token=89938194-d2c7-4336-860c-829871f65427',
+    health: 85,
+    maxHealth: 100,
+    mana: 60,
+    maxMana: 100,
     strength: 12,
     dexterity: 18,
     intelligence: 25,
     charisma: 15,
+    inventory: [
+      Item(name: 'Health Potion', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/potion.png?alt=media&token=18b53d53-4a00-4103-91b5-14498e7db828'),
+      Item(name: 'Mana Potion', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/mana_potion.png?alt=media&token=c27384a2-8957-41e9-8378-b1c4323204e3'),
+    ],
+    relationships: [
+      Relationship(
+        name: 'Kaelen, the Elder',
+        status: RelationshipStatus.ally,
+        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/kaelen_avatar.png?alt=media&token=10996b34-8c8c-44a6-88d3-3b3209d846c9',
+      ),
+      Relationship(
+        name: 'Lyra, the Rogue',
+        status: RelationshipStatus.neutral,
+        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/lyra_avatar.png?alt=media&token=8679ef1c-8d35-4239-8199-2d334de96245',
+      ),
+    ],
   );
 
-  // Player Inventory
-  final List<Item?> _inventory = [
-    Item(
-      name: 'Health Potion',
-      imageAsset: 'assets/images/potion.png',
-    ), // Placeholder
-    Item(
-      name: 'Mana Potion',
-      imageAsset: 'assets/images/mana_potion.png',
-    ), // Placeholder
-    null, // Empty slot
-    null, // Empty slot
-    null, // Empty slot
-    null, // Empty slot
-    null, // Empty slot
-    null, // Empty slot
-  ];
-
-  // Player Relationships
-  final List<NPC> _relationships = [
-    NPC(
-      name: 'Kaelen',
-      title: 'the Elder',
-      imageAsset: 'assets/images/kaelen_avatar.png', // Placeholder
-      status: RelationshipStatus.Ally,
-    ),
-    NPC(
-      name: 'Lyra',
-      title: 'the Rogue',
-      imageAsset: 'assets/images/lyra_avatar.png', // Placeholder
-      status: RelationshipStatus.Neutral,
-    ),
-  ];
-
-  // These are placeholders from your UI
-  int _chronoshards = 500;
   int _storiesCompleted = 4;
   int _achievements = 27;
 
@@ -71,46 +50,43 @@ class GameProvider with ChangeNotifier {
     return _currentStory!.scenes[_currentSceneId];
   }
 
-  PlayerStats get playerStats => _playerStats;
-  List<Item?> get inventory => _inventory;
-  List<NPC> get relationships => _relationships;
-
-  int get chronoshards => _chronoshards;
+  Player get player => _player;
   int get storiesCompleted => _storiesCompleted;
   int get achievements => _achievements;
 
   // --- Methods ---
 
-  /// Loads a story from a JSON asset file
   Future<void> loadStory(String storyAssetPath) async {
     try {
-      // Load the JSON file from assets
       final String jsonString = await rootBundle.loadString(storyAssetPath);
-      // Decode the JSON string into a Map
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
 
-      // Use our factory constructor to create a Story object
       _currentStory = Story.fromJson(storyAssetPath, jsonMap);
       _currentSceneId = _currentStory!.startSceneId;
-
-      // Tell all listening widgets to rebuild
       notifyListeners();
     } catch (e) {
       debugPrint('Error loading story: $e');
     }
   }
 
-  /// Updates the game state based on a player's choice
   void makeChoice(Choice choice) {
     if (_currentStory != null) {
       _currentSceneId = choice.nextSceneId;
 
-      // Check if we reached the end
       if (_currentSceneId == 'end_game') {
-        _storiesCompleted++; // Increment stories completed
-        // Here you could add logic to give achievements, etc.
+        _storiesCompleted++;
       }
 
+      notifyListeners();
+    }
+  }
+
+  // Example of a method that modifies player state
+  void useHealthPotion() {
+    final healthPotion = _player.inventory.firstWhere((item) => item.name == 'Health Potion');
+    if (healthPotion != null) {
+      _player.health = (_player.health + 25).clamp(0, _player.maxHealth);
+      _player.inventory.remove(healthPotion);
       notifyListeners();
     }
   }
