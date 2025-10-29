@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zero_adventures/providers/game_provider.dart';
 import 'package:zero_adventures/screens/game_screen.dart';
 import 'package:zero_adventures/screens/main_shell.dart';
+import 'package:zero_adventures/screens/settings_screen.dart';
 import 'package:zero_adventures/screens/welcome_screen.dart';
 
 void main() {
@@ -49,7 +50,7 @@ class ZeroAdventuresApp extends StatelessWidget {
         // Bottom Nav Bar Theme
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF1A1726),
-          selectedItemColor: Color(0xFF00FFFF),
+          selectedItemColor: const Color(0xFF00FFFF),
           unselectedItemColor: Colors.grey,
         ),
 
@@ -62,12 +63,13 @@ class ZeroAdventuresApp extends StatelessWidget {
         ),
       ),
 
-      // Define the app's routes
+      // Define the app's routesadded
       initialRoute: '/',
       routes: {
         '/': (context) => const WelcomeScreen(), // screen (4).png
         '/app': (context) => const MainShell(), // The app with bottom nav
         '/game': (context) => const GameScreen(), // screen (10).png
+        '/settings': (context) => const SettingsScreen(),
       },
     );
   }
