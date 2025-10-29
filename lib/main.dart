@@ -31,6 +31,10 @@ class ZeroAdventuresApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF12101B), // Dark bg
         primaryColor: const Color(0xFF00FFFF), // Cyan accent
         fontFamily: 'Roboto', // Or any font you prefer
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF00FFFF), // Cyan
+          surface: Color(0xFF1A1726), // Darker surface
+        ),
         // Button Theme
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -50,7 +54,7 @@ class ZeroAdventuresApp extends StatelessWidget {
         // Bottom Nav Bar Theme
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFF1A1726),
-          selectedItemColor: const Color(0xFF00FFFF),
+          selectedItemColor: Color(0xFF00FFFF),
           unselectedItemColor: Colors.grey,
         ),
 
@@ -63,7 +67,7 @@ class ZeroAdventuresApp extends StatelessWidget {
         ),
       ),
 
-      // Define the app's routesadded
+      // Define the app's routes
       initialRoute: '/',
       routes: {
         '/': (context) => const WelcomeScreen(), // screen (4).png

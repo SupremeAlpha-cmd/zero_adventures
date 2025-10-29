@@ -57,25 +57,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 _buildCategoryButton(context, 'Games', Icons.games, Colors.green),
               ],
             ),
-
-            // --- TEST BUTTON TO START STORY ---
-            // This is a temporary button to test our game logic
-            Center(
-              child: ElevatedButton(
-                child: const Text('Interstellar Odyssey'),
-                onPressed: () {
-                  // Get the provider and tell it to load our story
-                  context.read<GameProvider>().loadStory(
-                    'lib/assets/stories/interstellar_odyssey.json',
-                  );
-
-                  // Navigate to the game screen
-                  Navigator.pushNamed(context, '/game');
-                },
-              ),
-            ),
-
-            // --- END TEST BUTTON ---
             const SizedBox(height: 34),
             _buildStoryList('Top Rated', _topRatedStoriesFuture),
             const SizedBox(height: 24),

@@ -1,0 +1,40 @@
+{
+  "title": "The Last Stand",
+  "startSceneId": "introduction",
+  "scenes": {
+    "introduction": {
+      "title": "The Last Bastion",
+      "narrative": "You are the last defender of the bastion of Eldoria, a city that has stood for a thousand years. The enemy is at the gates, and you are the only one who can stop them.",
+      "choices": [
+        {
+          "text": "Face the horde alone.",
+          "nextSceneId": "face_the_horde"
+        },
+        {
+          "text": "Use the ancient artifact.",
+          "nextSceneId": "use_the_artifact"
+        }
+      ]
+    },
+    "face_the_horde": {
+      "title": "A Brave But Foolish Choice",
+      "narrative": "You charge out to meet the enemy. Your bravery is legendary, but even legends can die. You are overwhelmed and the city falls.",
+      "choices": [
+        {
+          "text": "End Game",
+          "nextSceneId": "end_game"
+        }
+      ]
+    },
+    "use_the_artifact": {
+      "title": "A Dangerous Gambit",
+      "narrative": "You unleash the power of the artifact. A wave of energy washes over the battlefield, destroying the enemy and saving the city. But the artifact's power comes at a terrible price: you are erased from existence.",
+      "choices": [
+        {
+          "text": "End Game",
+          "nextSceneId": "end_game"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "title": "The Silent City",
+  "startSceneId": "introduction",
+  "scenes": {
+    "introduction": {
+      "title": "The Lost City of Aeridor",
+      "narrative": "You are an adventurer who has stumbled upon the lost city of Aeridor. The city is silent, and there are no signs of life. You must uncover the city's secrets.",
+      "choices": [
+        {
+          "text": "Explore the city.",
+          "nextSceneId": "explore_the_city"
+        },
+        {
+          "text": "Leave the city.",
+          "nextSceneId": "leave_the_city"
+        }
+      ]
+    },
+    "explore_the_city": {
+      "title": "A City of Ghosts",
+      "narrative": "You wander the streets of the city, but you find nothing but dust and echoes. The city is a tomb, and you are trespassing.",
+      "choices": [
+        {
+          "text": "Leave the city.",
+          "nextSceneId": "leave_the_city"
+        }
+      ]
+    },
+    "leave_the_city": {
+      "title": "A Wise Decision",
+      "narrative": "You leave the city and its secrets behind. Some things are best left undisturbed.",
+      "choices": [
+        {
+          "text": "End Game",
+          "nextSceneId": "end_game"
+        }
+      ]
+    }
+  }
+}
