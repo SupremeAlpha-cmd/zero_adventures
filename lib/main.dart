@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zero_adventures/providers/game_provider.dart';
 import 'package:zero_adventures/providers/theme_provider.dart';
+import 'package:zero_adventures/screens/game_screen.dart';
 import 'package:zero_adventures/screens/main_shell.dart';
 import 'package:zero_adventures/screens/settings_screen.dart';
 import 'package:zero_adventures/screens/splash_screen.dart';
@@ -94,6 +95,8 @@ class ZeroAdventuresApp extends StatelessWidget {
         switch (settings.name) {
           case '/game':
             return MaterialPageRoute(builder: (context) => const MainShell());
+          case '/play-game':
+            return MaterialPageRoute(builder: (context) => const GameScreen());
           case '/settings':
             return MaterialPageRoute(builder: (context) => const SettingsScreen());
           default:
