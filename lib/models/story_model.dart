@@ -43,7 +43,8 @@ class Choice {
   factory Choice.fromJson(Map<String, dynamic> json) {
     return Choice(
       text: json['text'] as String,
-      nextSceneId: json['nextSceneId'] as String,
+      // Support both "nextSceneId" and "to" for choice navigation
+      nextSceneId: json['nextSceneId'] ?? json['to'] as String,
     );
   }
 }
@@ -64,8 +65,11 @@ class Story {
 
   /// Factory constructor to create a Story from a JSON map.
   factory Story.fromJson(String id, Map<String, dynamic> json) {
+    // Support both "scenes" and "nodes" for the scene map
+    final sceneData = json['scenes'] ?? json['nodes'] as Map<String, dynamic>;
+
     // Read the scenes map and convert each entry into a Scene object
-    var sceneMap = (json['scenes'] as Map<String, dynamic>).map(
+    var sceneMap = sceneData.map(
       (sceneId, sceneJson) => MapEntry(
         sceneId,
         Scene.fromJson(sceneId, sceneJson as Map<String, dynamic>),
@@ -75,7 +79,8 @@ class Story {
     return Story(
       id: id,
       title: json['title'] as String,
-      startSceneId: json['startSceneId'] as String,
+      // Support both "startSceneId" and "start_node" for the starting scene
+      startSceneId: json['startSceneId'] ?? json['start_node'] as String,
       scenes: sceneMap,
     );
   }

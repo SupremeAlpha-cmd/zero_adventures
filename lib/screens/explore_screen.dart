@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:zero_adventures/api.dart';
 import 'package:zero_adventures/mock_data.dart';
@@ -15,6 +16,33 @@ class _ExploreScreenState extends State<ExploreScreen> {
   late final Api _api;
   late Future<List<Story>> _topRatedStoriesFuture;
   late Future<List<Story>> _latestReleasesFuture;
+  late final List<String> _genres;
+  final Map<String, IconData> _genreIcons = {
+    'adventure': Icons.explore,
+    'sci-fi': Icons.rocket_launch,
+    'dystopian': Icons.public_off,
+    'fantasy': Icons.auto_stories,
+    'horror': Icons.mood_bad,
+    'action': Icons.directions_run,
+    'comedy': Icons.theater_comedy,
+    'romance': Icons.favorite,
+    'mystery': Icons.help,
+    'shonen': Icons.bolt,
+    'shojo': Icons.bubble_chart,
+  };
+  final Map<String, Color> _genreColors = {
+    'adventure': Colors.orange,
+    'sci-fi': Colors.blue,
+    'dystopian': Colors.grey,
+    'fantasy': Colors.purple,
+    'horror': Colors.red,
+    'action': Colors.green,
+    'comedy': Colors.yellow,
+    'romance': Colors.pink,
+    'mystery': Colors.teal,
+    'shonen': Colors.cyan,
+    'shojo': Colors.lime,
+  };
 
   @override
   void initState() {
@@ -22,6 +50,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     _api = Api();
     _topRatedStoriesFuture = _api.getTopRatedStories();
     _latestReleasesFuture = _api.getLatestReleases();
+    _genres = allStories.map((s) => s.subCategory).toSet().toList();
   }
 
   @override
@@ -44,17 +73,25 @@ class _ExploreScreenState extends State<ExploreScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Categories',
+              'Genres',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildCategoryButton(context, 'Movies', Icons.movie, Colors.orange),
-                _buildCategoryButton(context, 'Books', Icons.book, Colors.blue),
-                _buildCategoryButton(context, 'Anime', Icons.tv, Colors.purple),
-              ],
+            SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _genres.length,
+                itemBuilder: (context, index) {
+                  final genre = _genres[index];
+                  return _buildCategoryButton(
+                    context,
+                    genre,
+                    _genreIcons[genre.toLowerCase()] ?? Icons.question_mark,
+                    _genreColors[genre.toLowerCase()] ?? Colors.black,
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 34),
             _buildStoryList('Top Rated', _topRatedStoriesFuture),
@@ -77,20 +114,23 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ),
         );
       },
-      child: Column(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 16.0),
+        child: Column(
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(icon, color: color, size: 30),
             ),
-            child: Icon(icon, color: color, size: 30),
-          ),
-          const SizedBox(height: 8),
-          Text(title, style: const TextStyle(fontSize: 12)),
-        ],
+            const SizedBox(height: 8),
+            Text(title, style: const TextStyle(fontSize: 12)),
+          ],
+        ),
       ),
     );
   }
@@ -145,6 +185,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 height: 160,
                                 width: 140,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: 160,
+                                    width: 140,
+                                    color: Colors.grey[300],
+                                    child: const Icon(Icons.image_not_supported),
+                                  );
+                                },
                               ),
                             ),
                             const SizedBox(height: 8),
