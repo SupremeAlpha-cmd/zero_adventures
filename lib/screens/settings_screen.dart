@@ -1,82 +1,96 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zero_adventures/providers/theme_provider.dart';
+import 'package:zero_adventures/screens/welcome_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _soundEffects = true;
-  bool _music = false;
-  double _musicVolume = 0.75;
-  bool _pushNotifications = true;
+  Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Log Out?'),
+          content: const Text('Are you sure you want to log out?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Log Out'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                // Navigate to the welcome screen and remove all previous routes
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDarkMode = theme.brightness == Brightness.dark;
-    final primaryColor = isDarkMode ? const Color(0xFF4A4E69) : theme.primaryColor;
-    final textColor = isDarkMode ? Colors.white : Colors.black;
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      backgroundColor: isDarkMode ? const Color(0xFF121212) : Colors.grey.shade200,
       appBar: AppBar(
-        title: Text('Settings', style: TextStyle(color: textColor)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: IconThemeData(color: textColor),
+        title: const Text('Settings'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader('General', textColor),
-            _buildSettingsCard(
-              primaryColor,
-              [
-                _buildSwitchTile('Sound Effects', _soundEffects, (value) => setState(() => _soundEffects = value), textColor, primaryColor),
-                _buildSwitchTile('Music', _music, (value) => setState(() => _music = value), textColor, primaryColor),
-                _buildSliderTile('Music Volume', _musicVolume, (value) => setState(() => _musicVolume = value), textColor, primaryColor),
-                _buildSwitchTile('Push Notifications', _pushNotifications, (value) => setState(() => _pushNotifications = value), textColor, primaryColor),
-                _buildNavigationTile('Language', Icons.language, textColor, primaryColor, () {}),
-              ],
-            ),
+            _buildSectionHeader('Appearance', theme),
+            _buildSettingsCard(theme, [
+              _buildThemeChooser(context, themeProvider, theme),
+            ]),
             const SizedBox(height: 24),
-            _buildSectionHeader('Account', textColor),
-            _buildSettingsCard(
-              primaryColor,
-              [
-                _buildNavigationTile('Account Details', Icons.person_outline, textColor, primaryColor, () {}),
-                _buildNavigationTile('Change Password', Icons.lock_outline, textColor, primaryColor, () {}),
-                _buildNavigationTile('Link Social Accounts', Icons.share_outlined, textColor, primaryColor, () {}),
-              ],
-            ),
+            _buildSectionHeader('General', theme),
+            _buildSettingsCard(theme, [
+              _buildSwitchTile(theme, 'Sound Effects', true, (value) {}),
+              _buildSwitchTile(theme, 'Music', false, (value) {}),
+              _buildSliderTile(theme, 'Music Volume', 0.75, (value) {}),
+              _buildSwitchTile(theme, 'Push Notifications', true, (value) {}),
+              _buildNavigationTile(theme, 'Language', Icons.language, () {}),
+            ]),
+            const SizedBox(height: 24),
+            _buildSectionHeader('Account', theme),
+            _buildSettingsCard(theme, [
+              _buildNavigationTile(theme, 'Account Details', Icons.person_outline, () {}),
+              _buildNavigationTile(theme, 'Change Password', Icons.lock_outline, () {}),
+              _buildNavigationTile(theme, 'Link Social Accounts', Icons.share_outlined, () {}),
+            ]),
             const SizedBox(height: 16),
             Center(
               child: TextButton(
-                onPressed: () {},
-                child: const Text(
+                onPressed: () => _showLogoutConfirmationDialog(context),
+                child: Text(
                   'Log Out',
-                  style: TextStyle(color: Colors.red, fontSize: 16),
+                  style: TextStyle(color: theme.colorScheme.error, fontSize: 16),
                 ),
               ),
             ),
             const SizedBox(height: 24),
-            _buildSectionHeader('Support & Legal', textColor),
-            _buildSettingsCard(
-              primaryColor,
-              [
-                _buildNavigationTile('Help & FAQ', Icons.help_outline, textColor, primaryColor, () {}),
-                _buildNavigationTile('Report a Bug', Icons.bug_report_outlined, textColor, primaryColor, () {}),
-                _buildNavigationTile('Privacy Policy', Icons.shield_outlined, textColor, primaryColor, () {}),
-                _buildNavigationTile('Terms of Service', Icons.description_outlined, textColor, primaryColor, () {}),
-              ],
-            ),
-             const SizedBox(height: 24),
+            _buildSectionHeader('Support & Legal', theme),
+            _buildSettingsCard(theme, [
+              _buildNavigationTile(theme, 'Help & FAQ', Icons.help_outline, () {}),
+              _buildNavigationTile(theme, 'Report a Bug', Icons.bug_report_outlined, () {}),
+              _buildNavigationTile(theme, 'Privacy Policy', Icons.shield_outlined, () {}),
+              _buildNavigationTile(theme, 'Terms of Service', Icons.description_outlined, () {}),
+            ]),
+            const SizedBox(height: 24),
             const Center(
               child: Text(
                 'Zero Adventures v1.0.0',
@@ -89,50 +103,127 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Padding _buildSectionHeader(String title, Color textColor) {
+  Widget _buildThemeChooser(
+    BuildContext context,
+    ThemeProvider themeProvider,
+    ThemeData theme,
+  ) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        title.toUpperCase(),
-        style: TextStyle(color: textColor.withOpacity(0.6), fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.2),
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Theme',
+            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildThemeOption(context, themeProvider, 'Light', ThemeMode.light, Icons.wb_sunny),
+              _buildThemeOption(context, themeProvider, 'Dark', ThemeMode.dark, Icons.nightlight_round),
+              _buildThemeOption(context, themeProvider, 'System', ThemeMode.system, Icons.settings_brightness),
+            ],
+          ),
+        ],
       ),
     );
   }
 
-  Card _buildSettingsCard(Color cardColor, List<Widget> children) {
+  Widget _buildThemeOption(
+    BuildContext context,
+    ThemeProvider themeProvider,
+    String title,
+    ThemeMode mode,
+    IconData icon,
+  ) {
+    final bool isSelected = themeProvider.themeMode == mode;
+    final theme = Theme.of(context);
+
+    return GestureDetector(
+      onTap: () => themeProvider.setThemeMode(mode),
+      child: Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          color: isSelected ? theme.colorScheme.primary.withOpacity(0.2) : theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? theme.colorScheme.primary : Colors.grey.withOpacity(0.5),
+            width: 2,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: isSelected ? theme.colorScheme.primary : theme.iconTheme.color),
+            const SizedBox(height: 8),
+            Text(title, style: TextStyle(color: isSelected ? theme.colorScheme.primary : theme.textTheme.bodyLarge?.color)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding _buildSectionHeader(String title, ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0, left: 4.0),
+      child: Text(
+        title.toUpperCase(),
+        style: TextStyle(
+          color: theme.textTheme.bodySmall?.color?.withOpacity(0.6),
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.2,
+        ),
+      ),
+    );
+  }
+
+  Card _buildSettingsCard(ThemeData theme, List<Widget> children) {
     return Card(
-      color: cardColor,
+      elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(children: children),
     );
   }
 
-  ListTile _buildNavigationTile(String title, IconData icon, Color textColor, Color iconColor, VoidCallback onTap) {
+  ListTile _buildNavigationTile(ThemeData theme, String title, IconData icon, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: iconColor),
-      title: Text(title, style: TextStyle(color: textColor)),
+      leading: Icon(icon, color: theme.iconTheme.color),
+      title: Text(title),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
       onTap: onTap,
     );
   }
 
-  SwitchListTile _buildSwitchTile(String title, bool value, ValueChanged<bool> onChanged, Color textColor, Color activeColor) {
+  SwitchListTile _buildSwitchTile(
+    ThemeData theme,
+    String title,
+    bool value,
+    ValueChanged<bool> onChanged,
+  ) {
     return SwitchListTile.adaptive(
-      title: Text(title, style: TextStyle(color: textColor)),
+      title: Text(title),
       value: value,
       onChanged: onChanged,
-      activeColor: activeColor,
-      inactiveThumbColor: Colors.grey,
+      activeColor: theme.colorScheme.primary,
     );
   }
 
-   Padding _buildSliderTile(String title, double value, ValueChanged<double> onChanged, Color textColor, Color activeColor) {
+  Padding _buildSliderTile(
+    ThemeData theme,
+    String title,
+    double value,
+    ValueChanged<double> onChanged,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: TextStyle(color: textColor)),
+          Text(title),
           Row(
             children: [
               Expanded(
@@ -141,11 +232,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onChanged: onChanged,
                   min: 0.0,
                   max: 1.0,
-                  activeColor: activeColor,
-                  thumbColor: activeColor,
+                  activeColor: theme.colorScheme.primary,
+                  thumbColor: theme.colorScheme.primary,
                 ),
               ),
-              Text('${(value * 100).toInt()}%', style: TextStyle(color: textColor)),
+              Text('${(value * 100).toInt()}%'),
             ],
           ),
         ],
