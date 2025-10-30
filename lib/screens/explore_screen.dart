@@ -24,7 +24,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     'fantasy': Icons.auto_stories,
     'horror': Icons.mood_bad,
     'action': Icons.directions_run,
-    'comedy': Icons.theater_comedy,
+    'comedy': Icons.sentiment_very_satisfied,
     'romance': Icons.favorite,
     'mystery': Icons.help,
     'shonen': Icons.bolt,
@@ -50,6 +50,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     _api = Api();
     _topRatedStoriesFuture = _api.getTopRatedStories();
     _latestReleasesFuture = _api.getLatestReleases();
+    // Correctly initialize the list of genres from the mock data
     _genres = allStories.map((s) => s.subCategory).toSet().toList();
   }
 
