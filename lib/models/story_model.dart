@@ -62,7 +62,7 @@ class Story {
   factory Story.fromJson(String id, Map<String, dynamic> json) {
     final sceneData = json['scenes'] ?? json['nodes'];
     if (sceneData == null) {
-      throw Exception('Story has no scenes or nodes');
+      throw Exception('Story has no scenes or node');
     }
 
     // Explicitly create a Map<String, Scene> to ensure type safety.
