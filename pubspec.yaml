@@ -30,3 +30,14 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/stories/interstellar_odyssey.json
+    - lib/assets/stories/the_lost_temple_of_zara.json
+    - lib/assets/stories/cybernetic_dreams.json
+    - lib/assets/stories/the_gilded_cage.json
+    - lib/assets/stories/the_alchemists_secret.json
+    - lib/assets/stories/echoes_of_the_void.json
+    - lib/assets/stories/the_last_stand.json
+    - lib/assets/stories/jesters_gambit.json
+    - lib/assets/stories/the_crimson_affair.json
+    - lib/assets/stories/shadows_of_the_past.json
+    - lib/assets/stories/the_ronins_path.json
+    - lib/assets/stories/whispers_of_the_heart.json

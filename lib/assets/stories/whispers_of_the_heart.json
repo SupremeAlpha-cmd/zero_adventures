@@ -1,0 +1,30 @@
+{
+    "title": "Whispers of the Heart",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a high school student who has a crush on the most popular girl in school. You can either confess your feelings to her or keep them to yourself.",
+            "choices": [
+                {
+                    "text": "Confess your feelings",
+                    "to": "confess"
+                },
+                {
+                    "text": "Keep them to yourself",
+                    "to": "keep"
+                }
+            ]
+        },
+        "confess": {
+            "id": "confess",
+            "text": "You confess your feelings to her and she reciprocates. You are the happiest person in the world!",
+            "choices": []
+        },
+        "keep": {
+            "id": "keep",
+            "text": "You keep your feelings to yourself and watch as she falls in love with someone else.",
+            "choices": []
+        }
+    }
+}

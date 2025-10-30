@@ -21,4 +21,15 @@ class Api {
     // For now, we'll just return the mock data.
     return latestReleases;
   }
+
+  Future<List<Story>> getStoriesBySubCategory(String subCategory) async {
+    // Simulate a network delay
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // Filter the stories based on the sub-category
+    return allStories
+        .where((story) =>
+            story.subCategory.toLowerCase() == subCategory.toLowerCase())
+        .toList();
+  }
 }

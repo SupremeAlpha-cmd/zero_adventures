@@ -1,50 +1,50 @@
 {
-  "title": "Cybernetic Dreams",
-  "startSceneId": "introduction",
-  "scenes": {
-    "introduction": {
-      "title": "The Neon City",
-      "text": "You are a cyborg in a city of chrome and neon. You are haunted by dreams of a life you never had. You must discover the truth about your past.",
-      "choices": [
-        {
-          "text": "Search for your origins.",
-          "nextSceneId": "search_for_origins"
+    "title": "Cybernetic Dreams",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a cybernetically enhanced detective in a futuristic city. You've been hired to investigate a mysterious case. Your first lead is a shady informant in a back-alley clinic.",
+            "choices": [
+                {"text": "Meet the informant", "to": "informant"},
+                {"text": "Hack into the city's data network", "to": "hack"}
+            ]
         },
-        {
-          "text": "Embrace your new life.",
-          "nextSceneId": "embrace_new_life"
+        "informant": {
+            "id": "informant",
+            "text": "The informant gives you a cryptic message and a data chip. The message speaks of a powerful corporation and a secret project. You can either trust the informant or assume it's a trap.",
+            "choices": [
+                {"text": "Trust the informant", "to": "trust"},
+                {"text": "Assume it's a trap", "to": "trap"}
+            ]
+        },
+        "hack": {
+            "id": "hack",
+            "text": "You successfully hack into the network and find files related to the corporation. However, they are heavily encrypted. You can either try to decrypt them yourself or hire a more skilled hacker.",
+            "choices": [
+                {"text": "Decrypt them yourself", "to": "decrypt"},
+                {"text": "Hire a hacker", "to": "hire_hacker"}
+            ]
+        },
+        "trust": {
+            "id": "trust",
+            "text": "You follow the informant's lead and uncover a massive conspiracy. You have brought justice to the city!",
+            "choices": []
+        },
+        "trap": {
+            "id": "trap",
+            "text": "It was a trap! You are ambushed and your cybernetic enhancements are disabled. Your adventure ends here.",
+            "choices": []
+        },
+        "decrypt": {
+            "id": "decrypt",
+            "text": "You fail to decrypt the files and trigger a security alert. The corporation sends assassins after you. Your adventure ends here.",
+            "choices": []
+        },
+        "hire_hacker": {
+            "id": "hire_hacker",
+            "text": "The hacker you hired is a double agent and sells you out to the corporation. Your adventure ends here.",
+            "choices": []
         }
-      ]
-    },
-    "search_for_origins": {
-      "title": "A Dark Past",
-      "text": "You discover that you were once a human who was forced to become a cyborg. The people who did this to you are still out there, and they will stop at nothing to keep their secrets.",
-      "choices": [
-        {
-          "text": "Confront your creators.",
-          "nextSceneId": "confront_creators"
-        }
-      ]
-    },
-    "embrace_new_life": {
-      "title": "A New Beginning",
-      "text": "You accept your new life as a cyborg. You are no longer haunted by the past, and you are free to forge your own future.",
-      "choices": [
-        {
-          "text": "End Game",
-          "nextSceneId": "end_game"
-        }
-      ]
-    },
-    "confront_creators": {
-      "title": "A Final Showdown",
-      "text": "You confront your creators, and you learn the truth. You are a weapon, and they are your masters. You have a choice to make: obey them or fight for your freedom.",
-      "choices": [
-        {
-          "text": "End Game",
-          "nextSceneId": "end_game"
-        }
-      ]
     }
-  }
 }

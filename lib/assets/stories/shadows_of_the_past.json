@@ -1,0 +1,24 @@
+{
+    "title": "Shadows of the Past",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a detective investigating a cold case. You find a new lead that points to a powerful politician. You can either confront the politician or dig deeper into the case.",
+            "choices": [
+                {"text": "Confront the politician", "to": "confront"},
+                {"text": "Dig deeper", "to": "deeper"}
+            ]
+        },
+        "confront": {
+            "id": "confront",
+            "text": "You confront the politician and he confesses to the crime. You have solved the case!",
+            "choices": []
+        },
+        "deeper": {
+            "id": "deeper",
+            "text": "You dig deeper and uncover a conspiracy that goes all the way to the top. You are in over your head. Your adventure ends here.",
+            "choices": []
+        }
+    }
+}

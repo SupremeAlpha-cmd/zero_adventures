@@ -1,50 +1,37 @@
 {
-  "title": "The Gilded Cage",
-  "startSceneId": "introduction",
-  "scenes": {
-    "introduction": {
-      "title": "The City of the Elite",
-      "text": "You are a member of the elite in a city of unimaginable wealth and power. But you are a prisoner in a gilded cage. You must find a way to escape your life of luxury and find true freedom.",
-      "choices": [
-        {
-          "text": "Seek a way out.",
-          "nextSceneId": "seek_a_way_out"
+    "title": "The Gilded Cage",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a citizen in a dystopian society where everyone is assigned a role. You have been assigned the role of a historian, but you dream of a life of freedom. One day, you discover a hidden passage that might lead to the outside world.",
+            "choices": [
+                {"text": "Explore the passage", "to": "passage"},
+                {"text": "Ignore the passage and continue your life", "to": "ignore"}
+            ]
         },
-        {
-          "text": "Accept your fate.",
-          "nextSceneId": "accept_your_fate"
+        "passage": {
+            "id": "passage",
+            "text": "The passage leads you to a hidden community of rebels. They offer you a chance to join them and fight for freedom. You can either join the rebellion or return to your assigned role.",
+            "choices": [
+                {"text": "Join the rebellion", "to": "rebellion"},
+                {"text": "Return to your role", "to": "return"}
+            ]
+        },
+        "ignore": {
+            "id": "ignore",
+            "text": "You live the rest of your life in the gilded cage, always wondering what could have been.",
+            "choices": []
+        },
+        "rebellion": {
+            "id": "rebellion",
+            "text": "You join the rebellion and become a key figure in the fight for freedom. You have brought hope to the people!",
+            "choices": []
+        },
+        "return": {
+            "id": "return",
+            "text": "You return to your role, but you are discovered and executed for your defiance. Your adventure ends here.",
+            "choices": []
         }
-      ]
-    },
-    "seek_a_way_out": {
-      "title": "The Underground",
-      "text": "You discover a hidden world beneath the city, a world of poverty and rebellion. You have a chance to join the fight for freedom, but it will not be easy.",
-      "choices": [
-        {
-          "text": "Join the rebellion.",
-          "nextSceneId": "join_the_rebellion"
-        }
-      ]
-    },
-    "accept_your_fate": {
-      "title": "A Life of Empty Luxury",
-      "text": "You resign yourself to a life of comfort and ease. You have everything you could ever want, but you are not happy.",
-      "choices": [
-        {
-          "text": "End Game",
-          "nextSceneId": "end_game"
-        }
-      ]
-    },
-    "join_the_rebellion": {
-      "title": "A Dangerous New Life",
-      "text": "You join the rebellion and fight for a better world. You have found your purpose, but you have also made powerful enemies.",
-      "choices": [
-        {
-          "text": "End Game",
-          "nextSceneId": "end_game"
-        }
-      ]
     }
-  }
 }

@@ -1,0 +1,24 @@
+{
+    "title": "The Ronin's Path",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a ronin, a masterless samurai, wandering the land. You come across a village being terrorized by bandits. You can either defend the village or continue on your journey.",
+            "choices": [
+                {"text": "Defend the village", "to": "defend"},
+                {"text": "Continue on your journey", "to": "continue"}
+            ]
+        },
+        "defend": {
+            "id": "defend",
+            "text": "You defend the village and defeat the bandits. You are a hero!",
+            "choices": []
+        },
+        "continue": {
+            "id": "continue",
+            "text": "You continue on your journey, leaving the village to its fate.",
+            "choices": []
+        }
+    }
+}

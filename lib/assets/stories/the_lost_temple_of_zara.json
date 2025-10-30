@@ -1,0 +1,50 @@
+{
+    "title": "The Lost Temple of Zara",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are an adventurer searching for the Lost Temple of Zara. After a long journey, you find yourself at a crossroads. One path leads into a dark cave, the other into a dense jungle.",
+            "choices": [
+                {"text": "Enter the cave", "to": "cave"},
+                {"text": "Venture into the jungle", "to": "jungle"}
+            ]
+        },
+        "cave": {
+            "id": "cave",
+            "text": "The cave is dark and damp. You hear strange noises echoing from the depths. You can either light a torch or proceed in darkness.",
+            "choices": [
+                {"text": "Light a torch", "to": "torch"},
+                {"text": "Proceed in darkness", "to": "darkness"}
+            ]
+        },
+        "jungle": {
+            "id": "jungle",
+            "text": "The jungle is teeming with life. You see a path that seems to be man-made. You can either follow the path or try to cut your own way through the thick undergrowth.",
+            "choices": [
+                {"text": "Follow the path", "to": "path"},
+                {"text": "Cut your own way", "to": "undergrowth"}
+            ]
+        },
+        "torch": {
+            "id": "torch",
+            "text": "You light a torch and the cave is illuminated. You see that the noises were just bats. You have found the Lost Temple of Zara!",
+            "choices": []
+        },
+        "darkness": {
+            "id": "darkness",
+            "text": "You stumble in the darkness and fall into a pit. Your adventure ends here.",
+            "choices": []
+        },
+        "path": {
+            "id": "path",
+            "text": "You follow the path and it leads you directly to the Lost Temple of Zara!",
+            "choices": []
+        },
+        "undergrowth": {
+            "id": "undergrowth",
+            "text": "You get lost in the jungle and are never seen again.",
+            "choices": []
+        }
+    }
+}

@@ -1,40 +1,24 @@
 {
-  "title": "The Last Stand",
-  "startSceneId": "introduction",
-  "scenes": {
-    "introduction": {
-      "title": "The Last Bastion",
-      "text": "You are the last defender of the bastion of Eldoria, a city that has stood for a thousand years. The enemy is at the gates, and you are the only one who can stop them.",
-      "choices": [
-        {
-          "text": "Face the horde alone.",
-          "nextSceneId": "face_the_horde"
+    "title": "The Last Stand",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a soldier in a futuristic war. Your squad is pinned down by enemy fire. You can either make a last stand or try to retreat.",
+            "choices": [
+                {"text": "Make a last stand", "to": "stand"},
+                {"text": "Try to retreat", "to": "retreat"}
+            ]
         },
-        {
-          "text": "Use the ancient artifact.",
-          "nextSceneId": "use_the_artifact"
+        "stand": {
+            "id": "stand",
+            "text": "You fight valiantly and hold off the enemy, but you are the sole survivor. You are a hero!",
+            "choices": []
+        },
+        "retreat": {
+            "id": "retreat",
+            "text": "You are captured by the enemy. Your adventure ends here.",
+            "choices": []
         }
-      ]
-    },
-    "face_the_horde": {
-      "title": "A Brave But Foolish Choice",
-      "text": "You charge out to meet the enemy. Your bravery is legendary, but even legends can die. You are overwhelmed and the city falls.",
-      "choices": [
-        {
-          "text": "End Game",
-          "nextSceneId": "end_game"
-        }
-      ]
-    },
-    "use_the_artifact": {
-      "title": "A Dangerous Gambit",
-      "text": "You unleash the power of the artifact. A wave of energy washes over the battlefield, destroying the enemy and saving the city. But the artifact's power comes at a terrible price: you are erased from existence.",
-      "choices": [
-        {
-          "text": "End Game",
-          "nextSceneId": "end_game"
-        }
-      ]
     }
-  }
 }

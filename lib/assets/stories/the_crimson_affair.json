@@ -1,0 +1,24 @@
+{
+    "title": "The Crimson Affair",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a guest at a royal ball. You are in love with the princess, but she is engaged to a cruel duke. You can either confess your love to the princess or challenge the duke to a duel.",
+            "choices": [
+                {"text": "Confess your love", "to": "confess"},
+                {"text": "Challenge the duke", "to": "duel"}
+            ]
+        },
+        "confess": {
+            "id": "confess",
+            "text": "You confess your love to the princess and she reciprocates your feelings. You live happily ever after!",
+            "choices": []
+        },
+        "duel": {
+            "id": "duel",
+            "text": "You are no match for the duke in a duel. Your adventure ends here.",
+            "choices": []
+        }
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "title": "Echoes of the Void",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a paranormal investigator exploring a haunted mansion. You hear a strange noise coming from the basement. You can either investigate the noise or leave the mansion.",
+            "choices": [
+                {"text": "Investigate the noise", "to": "investigate"},
+                {"text": "Leave the mansion", "to": "leave"}
+            ]
+        },
+        "investigate": {
+            "id": "investigate",
+            "text": "You find a secret passage in the basement that leads to an ancient crypt. You can either enter the crypt or go back upstairs.",
+            "choices": [
+                {"text": "Enter the crypt", "to": "crypt"},
+                {"text": "Go back upstairs", "to": "upstairs"}
+            ]
+        },
+        "leave": {
+            "id": "leave",
+            "text": "You leave the mansion and never look back. The mystery of the haunted mansion remains unsolved.",
+            "choices": []
+        },
+        "crypt": {
+            "id": "crypt",
+            "text": "You enter the crypt and are confronted by a powerful ghost. You have uncovered the source of the haunting!",
+            "choices": []
+        },
+        "upstairs": {
+            "id": "upstairs",
+            "text": "You go back upstairs and the strange noises stop. You have failed to solve the mystery.",
+            "choices": []
+        }
+    }
+}

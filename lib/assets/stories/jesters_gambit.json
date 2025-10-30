@@ -1,0 +1,24 @@
+{
+    "title": "Jester's Gambit",
+    "start_node": "start",
+    "nodes": {
+        "start": {
+            "id": "start",
+            "text": "You are a jester in a royal court. The king is in a foul mood and you have to make him laugh. You can either tell a joke or perform a funny dance.",
+            "choices": [
+                {"text": "Tell a joke", "to": "joke"},
+                {"text": "Perform a funny dance", "to": "dance"}
+            ]
+        },
+        "joke": {
+            "id": "joke",
+            "text": "You tell a hilarious joke and the king laughs. You have saved the day!",
+            "choices": []
+        },
+        "dance": {
+            "id": "dance",
+            "text": "You perform a ridiculous dance, but the king is not amused. He banishes you from the kingdom. Your adventure ends here.",
+            "choices": []
+        }
+    }
+}

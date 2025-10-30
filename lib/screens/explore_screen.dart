@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:zero_adventures/api.dart';
 import 'package:zero_adventures/mock_data.dart';
-import 'package:zero_adventures/providers/game_provider.dart';
+import 'package:zero_adventures/screens/category_screen.dart';
+import 'package:zero_adventures/screens/story_details_screen.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -54,7 +54,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 _buildCategoryButton(context, 'Movies', Icons.movie, Colors.orange),
                 _buildCategoryButton(context, 'Books', Icons.book, Colors.blue),
                 _buildCategoryButton(context, 'Anime', Icons.tv, Colors.purple),
-                _buildCategoryButton(context, 'Games', Icons.games, Colors.green),
               ],
             ),
             const SizedBox(height: 34),
@@ -67,21 +66,32 @@ class _ExploreScreenState extends State<ExploreScreen> {
     );
   }
 
-  Widget _buildCategoryButton(BuildContext context, String title, IconData icon, Color color) {
-    return Column(
-      children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(16),
+  Widget _buildCategoryButton(
+      BuildContext context, String title, IconData icon, Color color) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryScreen(category: title),
           ),
-          child: Icon(icon, color: color, size: 30),
-        ),
-        const SizedBox(height: 8),
-        Text(title, style: const TextStyle(fontSize: 12)),
-      ],
+        );
+      },
+      child: Column(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(icon, color: color, size: 30),
+          ),
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(fontSize: 12)),
+        ],
+      ),
     );
   }
 
@@ -114,8 +124,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     final story = stories[index];
                     return GestureDetector(
                       onTap: () {
-                        context.read<GameProvider>().loadStory(story.storyAssetPath);
-                        Navigator.pushNamed(context, '/game');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                StoryDetailsScreen(story: story),
+                          ),
+                        );
                       },
                       child: Container(
                         width: 140,
@@ -142,7 +157,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             const SizedBox(height: 4),
                             Text(
                               story.author,
-                              style: const TextStyle(fontSize: 12, color: Colors.grey),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.grey),
                             ),
                           ],
                         ),
