@@ -17,6 +17,9 @@ class GameScreen extends StatelessWidget {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
+    // Check if the current scene is the end of the story
+    final bool isGameOver = scene.choices.isEmpty;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -27,7 +30,8 @@ class GameScreen extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Exit Game?'),
-                  content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+                  content: const Text(
+                      'Are you sure you want to exit? Your progress will not be saved.'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('Cancel'),
@@ -38,8 +42,8 @@ class GameScreen extends StatelessWidget {
                     TextButton(
                       child: const Text('Exit'),
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(); // Close the dialog
+                        Navigator.of(context).pop(); // Go back from the game screen
                       },
                     ),
                   ],
@@ -52,7 +56,9 @@ class GameScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.menu),
-            onPressed: () {},
+            onPressed: () {
+              // This could open a game menu in the future
+            },
           ),
         ],
       ),
@@ -75,24 +81,11 @@ class GameScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Column(
-                children: scene.choices.map((choice) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00FFFF),
-                        foregroundColor: Colors.black,
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
-                      onPressed: () {
-                        context.read<GameProvider>().makeChoice(choice);
-                      },
-                      child: Text(choice.text),
-                    ),
-                  );
-                }).toList(),
-              ),
+              // If it's game over, show the restart button, otherwise show choices
+              if (isGameOver)
+                _buildGameOver(context)
+              else
+                _buildChoices(context, scene.choices),
             ],
           ),
         ),
@@ -111,6 +104,57 @@ class GameScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF00FFFF),
         child: const Icon(Icons.person, color: Colors.black),
       ),
+    );
+  }
+
+  // Widget for displaying the choices
+  Widget _buildChoices(BuildContext context, List<Choice> choices) {
+    return Column(
+      children: choices.map((choice) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF00FFFF),
+              foregroundColor: Colors.black,
+              minimumSize: const Size(double.infinity, 50),
+            ),
+            onPressed: () {
+              context.read<GameProvider>().makeChoice(choice);
+            },
+            child: Text(choice.text),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  // Widget for the game over screen
+  Widget _buildGameOver(BuildContext context) {
+    return Column(
+      children: [
+        const Text(
+          'The End',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.amber,
+          ),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.orange,
+            foregroundColor: Colors.white,
+            minimumSize: const Size(double.infinity, 50),
+          ),
+          onPressed: () {
+            // Restart the story using the provider
+            context.read<GameProvider>().restartStory();
+          },
+          child: const Text('Restart'),
+        ),
+      ],
     );
   }
 }

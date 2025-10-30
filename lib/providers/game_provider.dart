@@ -71,12 +71,27 @@ class GameProvider with ChangeNotifier {
 
   void makeChoice(Choice choice) {
     if (_currentStory != null) {
-      _currentSceneId = choice.nextSceneId;
+      // Check if the next scene exists before moving to it.
+      if (_currentStory!.scenes.containsKey(choice.nextSceneId)) {
+        _currentSceneId = choice.nextSceneId;
+      } else {
+        // If the scene doesn't exist, it might be a designated end point
+        // or an error in the story file. For now, we'll treat it as an end.
+        _currentSceneId = null; // Setting to null will trigger the end screen
+      }
 
-      if (_currentSceneId == 'end_game') {
+      if (choice.nextSceneId == 'end_game') {
         _storiesCompleted++;
       }
 
+      notifyListeners();
+    }
+  }
+
+  /// Resets the current story to its starting scene.
+  void restartStory() {
+    if (_currentStory != null) {
+      _currentSceneId = _currentStory!.startSceneId;
       notifyListeners();
     }
   }
