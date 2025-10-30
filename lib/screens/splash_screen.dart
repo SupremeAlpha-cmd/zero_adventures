@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               Image.asset('assets/images/Kirasa - Dev.png', width: 200),
               const SizedBox(height: 20),
               const Text(
-                'Zero Adventures',
+                'Kirasa Games',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
