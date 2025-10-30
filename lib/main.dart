@@ -86,7 +86,6 @@ class ZeroAdventuresApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    Provider.of<AudioProvider>(context, listen: false).playMusic();
 
     return MaterialApp(
       title: 'Zero Adventures',

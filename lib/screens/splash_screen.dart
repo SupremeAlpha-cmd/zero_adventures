@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zero_adventures/providers/audio_provider.dart';
 import 'package:zero_adventures/screens/welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,6 +17,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
+
+    Provider.of<AudioProvider>(context, listen: false).playMusic();
 
     _controller = AnimationController(
       vsync: this,
