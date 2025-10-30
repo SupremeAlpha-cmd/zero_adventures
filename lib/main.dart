@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zero_adventures/providers/game_provider.dart';
 import 'package:zero_adventures/providers/theme_provider.dart';
+import 'package:zero_adventures/screens/main_shell.dart';
+import 'package:zero_adventures/screens/settings_screen.dart';
 import 'package:zero_adventures/screens/welcome_screen.dart';
 
 // Light Theme
@@ -87,6 +89,16 @@ class ZeroAdventuresApp extends StatelessWidget {
       darkTheme: darkTheme,
       themeMode: themeProvider.themeMode,
       home: const WelcomeScreen(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/game':
+            return MaterialPageRoute(builder: (context) => const MainShell());
+          case '/settings':
+            return MaterialPageRoute(builder: (context) => const SettingsScreen());
+          default:
+            return MaterialPageRoute(builder: (context) => const WelcomeScreen());
+        }
+      },
     );
   }
 }
