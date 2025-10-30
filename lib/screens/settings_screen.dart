@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zero_adventures/providers/audio_provider.dart';
+import 'package:zero_adventures/screens/main_shell.dart';
 import '../providers/theme_provider.dart';
 import 'welcome_screen.dart';
 
@@ -42,6 +44,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final audioProvider = Provider.of<AudioProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,16 +62,24 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 24),
             _buildSectionHeader('General', theme),
             _buildSettingsCard(theme, [
-              _buildSwitchTile(theme, 'Sound Effects', true, (value) {}),
-              _buildSwitchTile(theme, 'Music', false, (value) {}),
-              _buildSliderTile(theme, 'Music Volume', 0.75, (value) {}),
+              _buildSwitchTile(theme, 'Sound Effects', audioProvider.sfxEnabled, (value) {
+                audioProvider.toggleSfx(value);
+              }),
+              _buildSwitchTile(theme, 'Music', audioProvider.musicEnabled, (value) {
+                audioProvider.toggleMusic(value);
+              }),
+              _buildSliderTile(theme, 'Music Volume', audioProvider.musicVolume, (value) {
+                audioProvider.setMusicVolume(value);
+              }),
               _buildSwitchTile(theme, 'Push Notifications', true, (value) {}),
               _buildNavigationTile(theme, 'Language', Icons.language, () {}),
             ]),
             const SizedBox(height: 24),
             _buildSectionHeader('Account', theme),
             _buildSettingsCard(theme, [
-              _buildNavigationTile(theme, 'Account Details', Icons.person_outline, () {}),
+              _buildNavigationTile(theme, 'Account Details', Icons.person_outline, () {
+                Navigator.pushNamed(context, '/profile');
+              }),
               _buildNavigationTile(theme, 'Change Password', Icons.lock_outline, () {}),
               _buildNavigationTile(theme, 'Link Social Accounts', Icons.share_outlined, () {}),
             ]),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zero_adventures/providers/audio_provider.dart';
 import 'package:zero_adventures/providers/game_provider.dart';
 import 'package:zero_adventures/providers/theme_provider.dart';
 import 'package:zero_adventures/screens/game_screen.dart';
 import 'package:zero_adventures/screens/main_shell.dart';
+import 'package:zero_adventures/screens/profile_screen.dart';
 import 'package:zero_adventures/screens/settings_screen.dart';
 import 'package:zero_adventures/screens/splash_screen.dart';
 import 'package:zero_adventures/screens/welcome_screen.dart';
@@ -71,6 +73,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (context) => GameProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider(sharedPreferences)),
+        ChangeNotifierProvider(create: (context) => AudioProvider(sharedPreferences)),
       ],
       child: const ZeroAdventuresApp(),
     ),
@@ -83,6 +86,7 @@ class ZeroAdventuresApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    Provider.of<AudioProvider>(context, listen: false).playMusic();
 
     return MaterialApp(
       title: 'Zero Adventures',
@@ -97,6 +101,8 @@ class ZeroAdventuresApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => const MainShell());
           case '/play-game':
             return MaterialPageRoute(builder: (context) => const GameScreen());
+          case '/profile':
+            return MaterialPageRoute(builder: (context) => const ProfileScreen());
           case '/settings':
             return MaterialPageRoute(builder: (context) => const SettingsScreen());
           default:

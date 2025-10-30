@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zero_adventures/models/story_model.dart';
+import 'package:zero_adventures/providers/audio_provider.dart';
 import 'package:zero_adventures/providers/game_provider.dart';
 import 'package:zero_adventures/widgets/character_sheet.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
 
-  // Refactored method to show the exit confirmation dialog.
-  // This prevents code duplication and can be used by both the app bar back button
-  // and the system back button (via WillPopScope).
   Future<bool> _showExitConfirmationDialog(BuildContext context) async {
     return await showDialog<bool>(
           context: context,
@@ -22,14 +20,12 @@ class GameScreen extends StatelessWidget {
                 TextButton(
                   child: const Text('Cancel'),
                   onPressed: () {
-                    // Return false to indicate the user is not exiting.
                     Navigator.of(context).pop(false);
                   },
                 ),
                 TextButton(
                   child: const Text('Exit'),
                   onPressed: () {
-                    // Return true to indicate the user wants to exit.
                     Navigator.of(context).pop(true);
                   },
                 ),
@@ -37,12 +33,13 @@ class GameScreen extends StatelessWidget {
             );
           },
         ) ??
-        false; // If the dialog is dismissed (e.g., by tapping outside), default to not exiting.
+        false;
   }
 
   @override
   Widget build(BuildContext context) {
     final game = context.watch<GameProvider>();
+    final audio = context.read<AudioProvider>();
     final Scene? scene = game.currentScene;
     final storyTitle = game.currentStory?.title ?? 'Loading...';
 
@@ -52,7 +49,6 @@ class GameScreen extends StatelessWidget {
 
     final bool isGameOver = scene.choices.isEmpty;
 
-    // WillPopScope intercepts the system's back button press.
     return WillPopScope(
       onWillPop: () => _showExitConfirmationDialog(context),
       child: Scaffold(
@@ -60,7 +56,7 @@ class GameScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
-              // We now use the same confirmation logic for the app bar button.
+              audio.playSfx('click.wav');
               final bool shouldPop = await _showExitConfirmationDialog(context);
               if (shouldPop) {
                 Navigator.of(context).pop();
@@ -104,6 +100,7 @@ class GameScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            audio.playSfx('click.wav');
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
@@ -121,6 +118,7 @@ class GameScreen extends StatelessWidget {
   }
 
   Widget _buildChoices(BuildContext context, List<Choice> choices) {
+    final audio = context.read<AudioProvider>();
     return Column(
       children: choices.map((choice) {
         return Padding(
@@ -132,6 +130,7 @@ class GameScreen extends StatelessWidget {
               minimumSize: const Size(double.infinity, 50),
             ),
             onPressed: () {
+              audio.playSfx('click.wav');
               context.read<GameProvider>().makeChoice(choice);
             },
             child: Text(choice.text),
@@ -142,6 +141,7 @@ class GameScreen extends StatelessWidget {
   }
 
   Widget _buildGameOver(BuildContext context) {
+    final audio = context.read<AudioProvider>();
     return Column(
       children: [
         const Text(
@@ -160,6 +160,7 @@ class GameScreen extends StatelessWidget {
             minimumSize: const Size(double.infinity, 50),
           ),
           onPressed: () {
+            audio.playSfx('click.wav');
             context.read<GameProvider>().restartStory();
           },
           child: const Text('Restart'),
