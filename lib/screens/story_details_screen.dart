@@ -44,7 +44,7 @@ class StoryDetailsScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 context.read<GameProvider>().loadStory(story.storyAssetPath);
-                Navigator.pushNamed(context, '/game');
+                Navigator.pushNamed(context, '/play-game');
               },
               child: const Text('Play'),
             ),
