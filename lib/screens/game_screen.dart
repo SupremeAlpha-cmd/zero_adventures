@@ -7,6 +7,39 @@ import 'package:zero_adventures/widgets/character_sheet.dart';
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
 
+  // Refactored method to show the exit confirmation dialog.
+  // This prevents code duplication and can be used by both the app bar back button
+  // and the system back button (via WillPopScope).
+  Future<bool> _showExitConfirmationDialog(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Exit Game?'),
+              content: const Text(
+                  'Are you sure you want to exit? Your progress will not be saved.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    // Return false to indicate the user is not exiting.
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Exit'),
+                  onPressed: () {
+                    // Return true to indicate the user wants to exit.
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false; // If the dialog is dismissed (e.g., by tapping outside), default to not exiting.
+  }
+
   @override
   Widget build(BuildContext context) {
     final game = context.watch<GameProvider>();
@@ -17,97 +50,76 @@ class GameScreen extends StatelessWidget {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    // Check if the current scene is the end of the story
     final bool isGameOver = scene.choices.isEmpty;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Exit Game?'),
-                  content: const Text(
-                      'Are you sure you want to exit? Your progress will not be saved.'),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('Cancel'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: const Text('Exit'),
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog
-                        Navigator.of(context).pop(); // Go back from the game screen
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-        title: Text(storyTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              // This could open a game menu in the future
+    // WillPopScope intercepts the system's back button press.
+    return WillPopScope(
+      onWillPop: () => _showExitConfirmationDialog(context),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              // We now use the same confirmation logic for the app bar button.
+              final bool shouldPop = await _showExitConfirmationDialog(context);
+              if (shouldPop) {
+                Navigator.of(context).pop();
+              }
             },
           ),
-        ],
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Text(
-                    scene.text,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white.withOpacity(0.9),
-                      height: 1.6,
+          title: Text(storyTitle),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      scene.text,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white.withOpacity(0.9),
+                        height: 1.6,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              // If it's game over, show the restart button, otherwise show choices
-              if (isGameOver)
-                _buildGameOver(context)
-              else
-                _buildChoices(context, scene.choices),
-            ],
+                const SizedBox(height: 20),
+                if (isGameOver)
+                  _buildGameOver(context)
+                else
+                  _buildChoices(context, scene.choices),
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) {
-              return const CharacterSheet();
-            },
-          );
-        },
-        backgroundColor: const Color(0xFF00FFFF),
-        child: const Icon(Icons.person, color: Colors.black),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) {
+                return const CharacterSheet();
+              },
+            );
+          },
+          backgroundColor: const Color(0xFF00FFFF),
+          child: const Icon(Icons.person, color: Colors.black),
+        ),
       ),
     );
   }
 
-  // Widget for displaying the choices
   Widget _buildChoices(BuildContext context, List<Choice> choices) {
     return Column(
       children: choices.map((choice) {
@@ -129,7 +141,6 @@ class GameScreen extends StatelessWidget {
     );
   }
 
-  // Widget for the game over screen
   Widget _buildGameOver(BuildContext context) {
     return Column(
       children: [
@@ -149,7 +160,6 @@ class GameScreen extends StatelessWidget {
             minimumSize: const Size(double.infinity, 50),
           ),
           onPressed: () {
-            // Restart the story using the provider
             context.read<GameProvider>().restartStory();
           },
           child: const Text('Restart'),
