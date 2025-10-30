@@ -5,6 +5,7 @@ import 'package:zero_adventures/providers/game_provider.dart';
 import 'package:zero_adventures/providers/theme_provider.dart';
 import 'package:zero_adventures/screens/main_shell.dart';
 import 'package:zero_adventures/screens/settings_screen.dart';
+import 'package:zero_adventures/screens/splash_screen.dart';
 import 'package:zero_adventures/screens/welcome_screen.dart';
 
 // Light Theme
@@ -88,7 +89,7 @@ class ZeroAdventuresApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeProvider.themeMode,
-      home: const WelcomeScreen(),
+      home: const SplashScreen(), // Changed to SplashScreen
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/game':

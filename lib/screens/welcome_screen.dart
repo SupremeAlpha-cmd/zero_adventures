@@ -26,6 +26,8 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Spacer(flex: 2),
+              Image.asset('assets/images/Zero Adv Logo.png', height: 150), // Added app logo
+              const SizedBox(height: 24),
               const Text(
                 'Zero Adventures',
                 textAlign: TextAlign.center,
