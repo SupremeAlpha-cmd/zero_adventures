@@ -16,32 +16,18 @@ class _ExploreScreenState extends State<ExploreScreen> {
   late final Api _api;
   late Future<List<Story>> _topRatedStoriesFuture;
   late Future<List<Story>> _latestReleasesFuture;
-  late final List<String> _genres;
-  final Map<String, IconData> _genreIcons = {
-    'adventure': Icons.explore,
-    'sci-fi': Icons.rocket_launch,
-    'dystopian': Icons.public_off,
-    'fantasy': Icons.auto_stories,
-    'horror': Icons.mood_bad,
-    'action': Icons.directions_run,
-    'comedy': Icons.sentiment_very_satisfied,
-    'romance': Icons.favorite,
-    'mystery': Icons.help,
-    'shonen': Icons.bolt,
-    'shojo': Icons.bubble_chart,
+
+  // Re-introducing the main categories
+  final List<String> _mainCategories = ['Movies', 'Books', 'Anime'];
+  final Map<String, IconData> _categoryIcons = {
+    'Movies': Icons.movie,
+    'Books': Icons.book,
+    'Anime': Icons.tv,
   };
-  final Map<String, Color> _genreColors = {
-    'adventure': Colors.orange,
-    'sci-fi': Colors.blue,
-    'dystopian': Colors.grey,
-    'fantasy': Colors.purple,
-    'horror': Colors.red,
-    'action': Colors.green,
-    'comedy': Colors.yellow,
-    'romance': Colors.pink,
-    'mystery': Colors.teal,
-    'shonen': Colors.cyan,
-    'shojo': Colors.lime,
+  final Map<String, Color> _categoryColors = {
+    'Movies': Colors.orange,
+    'Books': Colors.purple,
+    'Anime': Colors.cyan,
   };
 
   @override
@@ -50,8 +36,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
     _api = Api();
     _topRatedStoriesFuture = _api.getTopRatedStories();
     _latestReleasesFuture = _api.getLatestReleases();
-    // Correctly initialize the list of genres from the mock data
-    _genres = allStories.map((s) => s.subCategory).toSet().toList();
   }
 
   @override
@@ -74,7 +58,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Genres',
+              'Categories', // Changed back from Genres
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -82,14 +66,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
               height: 100,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: _genres.length,
+                itemCount: _mainCategories.length,
                 itemBuilder: (context, index) {
-                  final genre = _genres[index];
+                  final category = _mainCategories[index];
                   return _buildCategoryButton(
                     context,
-                    genre,
-                    _genreIcons[genre.toLowerCase()] ?? Icons.question_mark,
-                    _genreColors[genre.toLowerCase()] ?? Colors.black,
+                    category,
+                    _categoryIcons[category] ?? Icons.question_mark,
+                    _categoryColors[category] ?? Colors.black,
                   );
                 },
               ),
@@ -108,6 +92,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       BuildContext context, String title, IconData icon, Color color) {
     return GestureDetector(
       onTap: () {
+        // Navigate to CategoryScreen with the selected main category
         Navigator.push(
           context,
           MaterialPageRoute(
