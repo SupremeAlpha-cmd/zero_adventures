@@ -20,6 +20,7 @@ class GameProvider with ChangeNotifier {
     dexterity: 18,
     intelligence: 25,
     charisma: 15,
+    chronoshards: 500, // Added the missing chronoshards property
     inventory: [
       Item(name: 'Health Potion', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/potion.png?alt=media&token=18b53d53-4a00-4103-91b5-14498e7db828'),
       Item(name: 'Mana Potion', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/mana_potion.png?alt=media&token=c27384a2-8957-41e9-8378-b1c4323204e3'),
@@ -71,13 +72,10 @@ class GameProvider with ChangeNotifier {
 
   void makeChoice(Choice choice) {
     if (_currentStory != null) {
-      // Check if the next scene exists before moving to it.
       if (_currentStory!.scenes.containsKey(choice.nextSceneId)) {
         _currentSceneId = choice.nextSceneId;
       } else {
-        // If the scene doesn't exist, it might be a designated end point
-        // or an error in the story file. For now, we'll treat it as an end.
-        _currentSceneId = null; // Setting to null will trigger the end screen
+        _currentSceneId = null;
       }
 
       if (choice.nextSceneId == 'end_game') {
@@ -88,7 +86,6 @@ class GameProvider with ChangeNotifier {
     }
   }
 
-  /// Resets the current story to its starting scene.
   void restartStory() {
     if (_currentStory != null) {
       _currentSceneId = _currentStory!.startSceneId;
@@ -96,7 +93,6 @@ class GameProvider with ChangeNotifier {
     }
   }
 
-  // Example of a method that modifies player state
   void useHealthPotion() {
     final healthPotion = _player.inventory.firstWhere((item) => item.name == 'Health Potion');
     if (healthPotion != null) {
