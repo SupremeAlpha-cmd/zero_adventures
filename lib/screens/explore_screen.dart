@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:zero_adventures/api.dart';
 import 'package:zero_adventures/mock_data.dart';
@@ -17,7 +16,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
   late Future<List<Story>> _topRatedStoriesFuture;
   late Future<List<Story>> _latestReleasesFuture;
 
-  // Re-introducing the main categories
   final List<String> _mainCategories = ['Movies', 'Books', 'Anime'];
   final Map<String, IconData> _categoryIcons = {
     'Movies': Icons.movie,
@@ -58,25 +56,30 @@ class _ExploreScreenState extends State<ExploreScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Categories', // Changed back from Genres
+              'Categories',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            SizedBox(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _mainCategories.length,
-                itemBuilder: (context, index) {
-                  final category = _mainCategories[index];
-                  return _buildCategoryButton(
-                    context,
-                    category,
-                    _categoryIcons[category] ?? Icons.question_mark,
-                    _categoryColors[category] ?? Colors.black,
-                  );
-                },
+            // Use a GridView for the main categories to make them larger
+            GridView.builder(
+              shrinkWrap: true, // Important for nested scrolling
+              physics: const NeverScrollableScrollPhysics(), // Disable scrolling in the grid
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, // 3 items per row
+                childAspectRatio: 1.0, // Make them square
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
               ),
+              itemCount: _mainCategories.length,
+              itemBuilder: (context, index) {
+                final category = _mainCategories[index];
+                return _buildCategoryButton(
+                  context,
+                  category,
+                  _categoryIcons[category] ?? Icons.question_mark,
+                  _categoryColors[category] ?? Colors.black,
+                );
+              },
             ),
             const SizedBox(height: 34),
             _buildStoryList('Top Rated', _topRatedStoriesFuture),
@@ -92,7 +95,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
       BuildContext context, String title, IconData icon, Color color) {
     return GestureDetector(
       onTap: () {
-        // Navigate to CategoryScreen with the selected main category
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -100,21 +102,18 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ),
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.only(right: 16.0),
+      child: Container(
+        // Replaced Padding and Column with a single Container
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(icon, color: color, size: 30),
-            ),
+            Icon(icon, color: color, size: 40), // Increased icon size
             const SizedBox(height: 8),
-            Text(title, style: const TextStyle(fontSize: 12)),
+            Text(title, style: const TextStyle(fontSize: 14)), // Increased text size
           ],
         ),
       ),
@@ -153,8 +152,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                StoryDetailsScreen(story: story),
+                            builder: (context) => StoryDetailsScreen(story: story),
                           ),
                         );
                       },
@@ -191,8 +189,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             const SizedBox(height: 4),
                             Text(
                               story.author,
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.grey),
+                              style: const TextStyle(fontSize: 12, color: Colors.grey),
                             ),
                           ],
                         ),
