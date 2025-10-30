@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AudioProvider with ChangeNotifier {
   final SharedPreferences sharedPreferences;
   late AudioPlayer _musicPlayer;
-  late AudioPlayer _sfxPlayer;
 
   bool _musicEnabled = true;
   bool _sfxEnabled = true;
@@ -14,7 +13,6 @@ class AudioProvider with ChangeNotifier {
 
   AudioProvider(this.sharedPreferences) {
     _musicPlayer = AudioPlayer();
-    _sfxPlayer = AudioPlayer();
     _loadPreferences();
   }
 
@@ -51,26 +49,27 @@ class AudioProvider with ChangeNotifier {
 
   void setSfxVolume(double volume) {
     _sfxVolume = volume;
-    _sfxPlayer.setVolume(volume);
     _savePreferences();
     notifyListeners();
   }
 
   // Methods
-  void playMusic() async {
+  Future<void> playMusic() async {
     if (_musicEnabled) {
-      await _musicPlayer.play(AssetSource('music/background.mp3'));
       _musicPlayer.setReleaseMode(ReleaseMode.loop);
+      await _musicPlayer.play(AssetSource('music/background.mp3'));
     }
   }
 
-  void stopMusic() async {
+  Future<void> stopMusic() async {
     await _musicPlayer.stop();
   }
 
-  void playSfx(String sfx) async {
+  Future<void> playSfx(String sfx) async {
     if (_sfxEnabled) {
-      await _sfxPlayer.play(AssetSource('sfx/$sfx'));
+      final sfxPlayer = AudioPlayer();
+      await sfxPlayer.setVolume(_sfxVolume);
+      await sfxPlayer.play(AssetSource('sfx/$sfx'));
     }
   }
 
