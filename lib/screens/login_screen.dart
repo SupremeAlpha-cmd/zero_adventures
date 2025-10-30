@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zero_adventures/screens/main_shell.dart'; // For navigation after login
+import 'package:zero_adventures/screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,8 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     // ** Simulating a network request **
-    // In a real app, you would have your authentication logic here.
-    // e.g., using Firebase Auth, a custom backend, etc.
     await Future.delayed(const Duration(seconds: 2));
 
     setState(() {
@@ -126,8 +125,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Text("Don't have an account?"),
                   TextButton(
                     onPressed: () {
-                      // Navigate to the sign-up screen
-                      Navigator.pop(context); // Close the login screen first
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SignupScreen()),
+                      );
                     },
                     child: const Text('Sign Up'),
                   ),

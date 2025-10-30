@@ -3,12 +3,25 @@ import 'package:provider/provider.dart';
 import 'package:zero_adventures/models/player_model.dart';
 import 'package:zero_adventures/providers/game_provider.dart';
 
-class CharacterSheet extends StatelessWidget {
+class CharacterSheet extends StatefulWidget {
   const CharacterSheet({super.key});
 
   @override
+  State<CharacterSheet> createState() => _CharacterSheetState();
+}
+
+class _CharacterSheetState extends State<CharacterSheet> {
+  Item? _selectedItem;
+
+  @override
   Widget build(BuildContext context) {
-    final player = context.watch<GameProvider>().player;
+    final gameProvider = context.watch<GameProvider>();
+    final player = gameProvider.player;
+
+    // Automatically select the first item if none is selected
+    if (_selectedItem == null && player.inventory.isNotEmpty) {
+      _selectedItem = player.inventory.first;
+    }
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
@@ -24,14 +37,7 @@ class CharacterSheet extends StatelessWidget {
             children: [
               _buildHeader(context, player),
               const SizedBox(height: 24),
-              Text(
-                'Character Stats',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              _buildSectionTitle('Character Stats'),
               const SizedBox(height: 16),
               _buildStatBar(
                 'Health (HP)',
@@ -51,30 +57,29 @@ class CharacterSheet extends StatelessWidget {
               const SizedBox(height: 24),
               _buildAttributeGrid(player),
               const SizedBox(height: 24),
-              Text(
-                'Inventory',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              _buildSectionTitle('Inventory'),
               const SizedBox(height: 16),
               _buildInventoryGrid(player.inventory),
               const SizedBox(height: 24),
-              Text(
-                'Relationships',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              _buildSelectedItemDetails(context, gameProvider),
+              const SizedBox(height: 24),
+              _buildSectionTitle('Relationships'),
               const SizedBox(height: 16),
               _buildRelationshipsList(player.relationships),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        color: Colors.white.withOpacity(0.8),
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -101,10 +106,7 @@ class CharacterSheet extends StatelessWidget {
             Text(
               player.name,
               style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+                  fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 4),
             Text(
@@ -118,12 +120,7 @@ class CharacterSheet extends StatelessWidget {
   }
 
   Widget _buildStatBar(
-    String label,
-    IconData icon,
-    double value,
-    String textValue,
-    Color color,
-  ) {
+      String label, IconData icon, double value, String textValue, Color color) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,15 +128,9 @@ class CharacterSheet extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 20),
             const SizedBox(width: 8),
-            Text(
-              label,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
+            Text(label, style: const TextStyle(color: Colors.white, fontSize: 16)),
             const Spacer(),
-            Text(
-              textValue,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
+            Text(textValue, style: const TextStyle(color: Colors.white, fontSize: 16)),
           ],
         ),
         const SizedBox(height: 8),
@@ -179,20 +170,13 @@ class CharacterSheet extends StatelessWidget {
       children: [
         Text(
           label.toUpperCase(),
-          style: const TextStyle(
-            color: Colors.white54,
-            fontSize: 12,
-            letterSpacing: 0.5,
-          ),
+          style: const TextStyle(color: Colors.white54, fontSize: 12, letterSpacing: 0.5),
         ),
         const SizedBox(height: 4),
         Text(
           value.toString(),
           style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -205,38 +189,102 @@ class CharacterSheet extends StatelessWidget {
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
       ),
-      itemCount: 8,
+      itemCount: 8, // Fixed number of slots
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final item = index < inventory.length ? inventory[index] : null;
-        final isSelected = index == 0;
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isSelected ? Colors.cyan.shade400 : Colors.white24,
-              width: isSelected ? 2 : 1,
+        final isSelected = item != null && _selectedItem?.name == item.name;
+
+        return GestureDetector(
+          onTap: () {
+            if (item != null) {
+              setState(() {
+                _selectedItem = item;
+              });
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isSelected ? Colors.cyan.shade400 : Colors.white24,
+                width: isSelected ? 2 : 1,
+              ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: Colors.cyan.shade400.withOpacity(0.5),
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                      )
+                    ]
+                  : [],
             ),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: Colors.cyan.shade400.withOpacity(0.5),
-                      blurRadius: 8,
-                      spreadRadius: 2,
-                    )
-                  ]
-                : [],
+            child: item != null
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(item.imageUrl, fit: BoxFit.contain),
+                  )
+                : null,
           ),
-          child: item != null
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.network(item.imageUrl),
-                )
-              : null,
         );
       },
+    );
+  }
+
+  Widget _buildSelectedItemDetails(BuildContext context, GameProvider gameProvider) {
+    final bool canUseItem = _selectedItem != null &&
+        ((_selectedItem!.name == 'Health Potion' && gameProvider.player.health < gameProvider.player.maxHealth) ||
+         (_selectedItem!.name == 'Mana Potion' && gameProvider.player.mana < gameProvider.player.maxMana));
+
+    if (_selectedItem == null) {
+      return const Center(
+          child: Text('No items in inventory.', style: TextStyle(color: Colors.white70)));
+    }
+
+    return Column(
+      children: [
+        Text(
+          _selectedItem!.name,
+          style: const TextStyle(
+            color: Colors.white, 
+            fontSize: 18, 
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'A common potion used to restore a small amount of health.', // Placeholder description
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white70, fontSize: 14),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: canUseItem
+              ? () {
+                  if (_selectedItem!.name == 'Health Potion') {
+                    context.read<GameProvider>().useHealthPotion();
+                  } else if (_selectedItem!.name == 'Mana Potion') {
+                    // You need to implement useManaPotion() in your provider
+                    // context.read<GameProvider>().useManaPotion();
+                  }
+                  // After using, the item might be gone, so we should update the state
+                  setState(() {
+                    _selectedItem = null; // Or select the next item
+                  });
+                }
+              : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.cyan.shade400,
+            disabledBackgroundColor: Colors.grey.shade800,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+          ),
+          child: const Text('Use Item', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        ),
+      ],
     );
   }
 
@@ -279,10 +327,7 @@ class CharacterSheet extends StatelessWidget {
           Text(
             relationship.name,
             style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
           ),
           const Spacer(),
           Container(
@@ -295,10 +340,7 @@ class CharacterSheet extends StatelessWidget {
             child: Text(
               statusText,
               style: TextStyle(
-                color: statusColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
+                  color: statusColor, fontWeight: FontWeight.bold, fontSize: 12),
             ),
           ),
         ],

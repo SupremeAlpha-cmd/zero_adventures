@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zero_adventures/screens/main_shell.dart'; // For navigation after signup
+import 'package:zero_adventures/screens/login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -126,7 +127,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   const Text("Already have an account?"),
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      );
                     },
                     child: const Text('Sign In'),
                   ),

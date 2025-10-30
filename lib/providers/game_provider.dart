@@ -20,7 +20,7 @@ class GameProvider with ChangeNotifier {
     dexterity: 18,
     intelligence: 25,
     charisma: 15,
-    chronoshards: 500, // Added the missing chronoshards property
+    chronoshards: 500,
     inventory: [
       Item(name: 'Health Potion', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/potion.png?alt=media&token=18b53d53-4a00-4103-91b5-14498e7db828'),
       Item(name: 'Mana Potion', imageUrl: 'https://firebasestorage.googleapis.com/v0/b/zero-adventures-42749.appspot.com/o/mana_potion.png?alt=media&token=c27384a2-8957-41e9-8378-b1c4323204e3'),
@@ -94,11 +94,26 @@ class GameProvider with ChangeNotifier {
   }
 
   void useHealthPotion() {
-    final healthPotion = _player.inventory.firstWhere((item) => item.name == 'Health Potion');
-    if (healthPotion != null) {
+    try {
+      final healthPotion = _player.inventory.firstWhere((item) => item.name == 'Health Potion');
       _player.health = (_player.health + 25).clamp(0, _player.maxHealth);
       _player.inventory.remove(healthPotion);
       notifyListeners();
+    } catch (e) {
+      // Item not found, handle gracefully
+      debugPrint('No health potion available.');
+    }
+  }
+
+  void useManaPotion() {
+    try {
+      final manaPotion = _player.inventory.firstWhere((item) => item.name == 'Mana Potion');
+      _player.mana = (_player.mana + 25).clamp(0, _player.maxMana);
+      _player.inventory.remove(manaPotion);
+      notifyListeners();
+    } catch (e) {
+      // Item not found, handle gracefully
+      debugPrint('No mana potion available.');
     }
   }
 }
